@@ -646,10 +646,11 @@ async def autocomplete_kup_auto(interaction: discord.Interaction, current: str):
 @tree.command(name="koupit-zbran", description="Koupit zbraň z nabídky")
 @app_commands.describe(zbran="Zbraň, kterou chceš koupit", pocet="Počet kusů")
 async def koupit_zbran(interaction: discord.Interaction, zbran: str, pocet: int = 1):
-    role_id = 1293617188988784667  # Změň na ID role s oprávněním
-     if not any(role.id == role_id for role in interaction.user.roles):
-        await interaction.response.send_message("❌ Nemáš oprávnění použít tento příkaz.", ephemeral=True)
+    role_id = 1293617188988784667  # Změň na ID role, která má povolený nákup zbraní
+    if not any(role.id == role_id for role in interaction.user.roles):
+        await interaction.response.send_message("❌ Nemáš oprávnění koupit zbraně.", ephemeral=True)
         return
+
     uzivatel = interaction.user
     data = get_or_create_user(uzivatel.id)
 
@@ -662,9 +663,27 @@ async def koupit_zbran(interaction: discord.Interaction, zbran: str, pocet: int 
 
     total_money = get_total_money(data)
     if total_money < celkova_cena:
-        await interaction.response.send_message(f"❌ Nemáš dostatek peněz ({total_money:,}$) na koupi {pocet}x `{zbran}` (potřebuješ {celkova_cena:,}$).", ephemeral=True)
+        await interaction.response.send_message(
+            f"❌ Nemáš dostatek peněz ({total_money:,}$) na koupi {pocet}x `{zbran}` (potřebuješ {celkova_cena:,}$).",
+            ephemeral=True
+        )
         return
 
+    # Strhnutí peněz
+    odeber_penize(data, celkova_cena)
+
+    # Přidání zbraně
+    if zbran in data["zbrane"]:
+        data["zbrane"][zbran] += pocet
+    else:
+        data["zbrane"][zbran] = pocet
+
+    save_data()
+
+    await interaction.response.send_message(
+        f"✅ Úspěšně jsi koupil {pocet}x `{zbran}` za {celkova_cena:,}$.",
+        ephemeral=False
+    )
     # Remove money from buyer (hotovost first, then bank)
     remaining_to_remove = celkova_cena
     if data["hotovost"] >= remaining_to_remove:
