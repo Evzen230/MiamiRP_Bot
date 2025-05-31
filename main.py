@@ -293,7 +293,7 @@ async def pridej_zbran(interaction: discord.Interaction,
                            uzivatel: discord.Member,
                            zbran: str,
                            pocet: int = 1):
-        role_id = 1378111107780313209  # Změň na skutečné ID role
+        role_id = 1356305712531243048  # Změň na skutečné ID role
         if not any(role.id == role_id for role in interaction.user.roles):
             await interaction.response.send_message(
                 "❌ Nemáš oprávnění použít tento příkaz.", ephemeral=True)
@@ -328,7 +328,7 @@ async def odeber_zbran(interaction: discord.Interaction,
                            uzivatel: discord.Member,
                            zbran: str,
                            pocet: int = 1):
-        role_id = 1378111107780313209  # Změň na skutečné ID role
+        role_id = 1356305712531243048  # Změň na skutečné ID role
         if not any(role.id == role_id for role in interaction.user.roles):
             await interaction.response.send_message(
                 "❌ Nemáš oprávnění použít tento příkaz.", ephemeral=True)
@@ -368,7 +368,7 @@ async def pridej_auto(interaction: discord.Interaction,
                           uzivatel: discord.Member,
                           auto: str,
                           pocet: int = 1):
-        role_id = 1378111107780313209  # Změň na skutečné ID role
+        role_id = 1356305712531243048  # Změň na skutečné ID role
         if not any(role.id == role_id for role in interaction.user.roles):
             await interaction.response.send_message(
                 "❌ Nemáš oprávnění použít tento příkaz.", ephemeral=True)
@@ -403,7 +403,7 @@ async def odeber_auto(interaction: discord.Interaction,
                           uzivatel: discord.Member,
                           auto: str,
                           pocet: int = 1):
-        role_id = 1378111107780313209  # Změň na skutečné ID role
+        role_id = 1356305712531243048  # Změň na skutečné ID role
         if not any(role.id == role_id for role in interaction.user.roles):
             await interaction.response.send_message(
                 "❌ Nemáš oprávnění použít tento příkaz.", ephemeral=True)
@@ -460,7 +460,7 @@ async def inventory(interaction: discord.Interaction,
 @tree.command(name="reset-inventory", description="Resetuje celý inventář hráče (admin)")
 @app_commands.describe(uzivatel="Uživatel, jehož inventář chceš vymazat")
 async def reset_inventory(interaction: discord.Interaction, uzivatel: discord.Member):
-    role_id = 1378111107780313209  # Změň na skutečné ID role
+    role_id = 1356305712531243048  # Změň na skutečné ID role
     if not any(role.id == role_id for role in interaction.user.roles):
         await interaction.response.send_message("❌ Nemáš oprávnění použít tento příkaz.", ephemeral=True)
         return
@@ -499,7 +499,7 @@ async def balance(interaction: discord.Interaction, uzivatel: discord.Member = N
 @tree.command(name="pridej-penize", description="Přidá peníze hráči (admin)")
 @app_commands.describe(uzivatel="Uživatel, kterému chceš přidat peníze", castka="Kolik peněz chceš přidat")
 async def pridej_penize(interaction: discord.Interaction, uzivatel: discord.Member, castka: int):
-    role_id = 1378111107780313209  # Změň na ID role s oprávněním
+    role_id = 1356305712531243048  # Změň na ID role s oprávněním
     if not any(role.id == role_id for role in interaction.user.roles):
         await interaction.response.send_message("❌ Nemáš oprávnění použít tento příkaz.", ephemeral=True)
         return
@@ -513,7 +513,7 @@ async def pridej_penize(interaction: discord.Interaction, uzivatel: discord.Memb
 @tree.command(name="odeber-penize", description="Odebere peníze hráči (admin)")
 @app_commands.describe(uzivatel="Uživatel, kterému chceš odebrat peníze", castka="Kolik peněz chceš odebrat (nebo 'all' pro všechny)")
 async def odeber_penize(interaction: discord.Interaction, uzivatel: discord.Member, castka: str):
-    role_id = 1378111107780313209  # Změň na ID role s oprávněním
+    role_id = 1356305712531243048  # Změň na ID role s oprávněním
     if not any(role.id == role_id for role in interaction.user.roles):
         await interaction.response.send_message("❌ Nemáš oprávnění použít tento příkaz.", ephemeral=True)
         return
@@ -552,7 +552,7 @@ async def odeber_penize(interaction: discord.Interaction, uzivatel: discord.Memb
 @tree.command(name="reset-penize", description="Resetuje peníze hráče (admin)")
 @app_commands.describe(uzivatel="Uživatel, jehož peníze chceš vynulovat")
 async def reset_penize(interaction: discord.Interaction, uzivatel: discord.Member):
-    role_id = 1378111107780313209  # Změň na ID role s oprávněním
+    role_id = 1356305712531243048  # Změň na ID role s oprávněním
     if not any(role.id == role_id for role in interaction.user.roles):
         await interaction.response.send_message("❌ Nemáš oprávnění použít tento příkaz.", ephemeral=True)
         return
