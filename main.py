@@ -1065,8 +1065,8 @@ async def log_action(bot, guild: discord.Guild, message: str):
     log_channel = guild.get_channel(LOG_CHANNEL_ID)
     if log_channel:
         await log_channel.send(f"📘 **Log:** {message}")
-await log_action(bot, interaction.guild, f"{interaction.user.mention} koupil {pocet}x `{zbran}` za {celkova_cena:,}$")
-await log_action(bot, interaction.guild, f"{interaction.user.mention} vybral {castka:,}$ z banky do hotovosti.")
-await log_action(bot, interaction.guild, f"{interaction.user.mention} vybral týdenní odměny: {celkem:,}$ z rolí.")
+    await log_action(bot, interaction.guild, f"{interaction.user.mention} koupil {pocet}x `{zbran}` za {celkova_cena:,}$")
+    await log_action(bot, interaction.guild, f"{interaction.user.mention} vybral {castka:,}$ z banky do hotovosti.")
+    await log_action(bot, interaction.guild, f"{interaction.user.mention} vybral týdenní odměny: {celkem:,}$ z rolí.")
 
 bot.run(TOKEN)
