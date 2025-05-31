@@ -180,7 +180,20 @@ DOSTUPNE_ZBRANE = [
 # === Databáze ===
 
 DATA_FILE = "data.json"
-
+def get_or_create_user(user_id):
+    user_id = str(user_id)
+    if user_id not in databaze:
+        databaze[user_id] = {
+            "auta": {},
+            "zbrane": {},
+            "penize": 0,
+            "hotovost": 0,
+            "bank": 0,
+            "last_collect": None,
+            "collect_timestamps": {}
+        }
+        save_data()
+    return databaze[user_id]
 # Načti data
 try:
     with open(DATA_FILE, "r") as f:
@@ -992,6 +1005,68 @@ async def collect(interaction: discord.Interaction):
         embed.description = "❌ Tento týden už sis vybral odměnu za všechny své role."
 
     await interaction.response.send_message(embed=embed, ephemeral=True)
+@tree.command(name="leaderboard", description="Zobrazí žebříček nejbohatších hráčů")
+async def leaderboard(interaction: discord.Interaction):
+    await interaction.response.defer()  # Načítání, pokud to trvá déle
 
+    # Seřadit uživatele podle celkových peněz (hotovost + bank)
+    sorted_users = sorted([
+        {
+            "user_id": int(uid),
+            "total": user["hotovost"] + user["bank"]
+        }
+        for uid, user in databaze.items()
+    ], key=itemgetter("total"), reverse=True)
+
+    # Parametry stránkování
+    per_page = 10
+    total_pages = (len(sorted_users) + per_page - 1) // per_page
+
+    # Embed render funkce
+    def create_embed(page: int):
+        start = page * per_page
+        end = start + per_page
+        embed = discord.Embed(title="💰 Leaderboard – Nejbohatší hráči", color=discord.Color.gold())
+        embed.set_footer(text=f"Stránka {page + 1}/{total_pages}")
+
+        for i, entry in enumerate(sorted_users[start:end], start=start + 1):
+            member = interaction.guild.get_member(entry["user_id"])
+            name = member.display_name if member else f"Uživatel {entry['user_id']}"
+            embed.add_field(
+                name=f"#{i} – {name}",
+                value=f"💵 {entry['total']:,}$",
+                inline=False
+            )
+        return embed
+
+    # View s tlačítky
+    class LeaderboardView(View):
+        def __init__(self):
+            super().__init__(timeout=60)
+            self.page = 0
+
+        @discord.ui.button(label="⬅️", style=discord.ButtonStyle.secondary)
+        async def prev(self, interaction2: discord.Interaction, button: Button):
+            if self.page > 0:
+                self.page -= 1
+                await interaction2.response.edit_message(embed=create_embed(self.page), view=self)
+
+        @discord.ui.button(label="➡️", style=discord.ButtonStyle.secondary)
+        async def next(self, interaction2: discord.Interaction, button: Button):
+            if self.page < total_pages - 1:
+                self.page += 1
+                await interaction2.response.edit_message(embed=create_embed(self.page), view=self)
+
+    await interaction.followup.send(embed=create_embed(0), view=LeaderboardView())
+
+LOG_CHANNEL_ID = 1293617189055758433  # Změň na ID kanálu, kam chceš logy posílat
+
+async def log_action(bot, guild: discord.Guild, message: str):
+    log_channel = guild.get_channel(LOG_CHANNEL_ID)
+    if log_channel:
+        await log_channel.send(f"📘 **Log:** {message}")
+await log_action(bot, interaction.guild, f"{interaction.user.mention} koupil {pocet}x `{zbran}` za {celkova_cena:,}$")
+await log_action(bot, interaction.guild, f"{interaction.user.mention} vybral {castka:,}$ z banky do hotovosti.")
+await log_action(bot, interaction.guild, f"{interaction.user.mention} vybral týdenní odměny: {celkem:,}$ z rolí.")
 
 bot.run(TOKEN)
