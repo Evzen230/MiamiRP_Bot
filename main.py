@@ -201,6 +201,12 @@ try:
 except (FileNotFoundError, json.JSONDecodeError):
     databaze = {}
 
+LOG_CHANNEL_ID = 1293617189055758433  # Změň na ID kanálu, kam chceš logy posílat
+
+async def log_action(bot, guild: discord.Guild, message: str):
+    log_channel = guild.get_channel(LOG_CHANNEL_ID)
+    if log_channel:
+        await log_channel.send(f"📘 **Log:** {message}")
 
 
 
@@ -720,7 +726,7 @@ async def koupit_zbran(interaction: discord.Interaction, zbran: str, pocet: int 
 @koupit_zbran.autocomplete("zbran")
 async def autocomplete_koupit_zbran(interaction: discord.Interaction, current: str):
     return [app_commands.Choice(name=z, value=z) for z in CENY_ZBRANI if current.lower() in z.lower()][:25]
-
+     await log_action(bot, interaction.guild, f"{interaction.user.mention} vybral týdenní odměny: {celkem:,}$ z rolí.")
 
 @tree.command(name="prodej-auto", description="Prodá auto jinému hráči")
 @app_commands.describe(kupec="Komu prodáváš auto", auto="Jaké auto prodáváš", cena="Cena za auto")
@@ -1059,14 +1065,8 @@ async def leaderboard(interaction: discord.Interaction):
 
     await interaction.followup.send(embed=create_embed(0), view=LeaderboardView())
 
-LOG_CHANNEL_ID = 1293617189055758433  # Změň na ID kanálu, kam chceš logy posílat
-
-async def log_action(bot, guild: discord.Guild, message: str):
-    log_channel = guild.get_channel(LOG_CHANNEL_ID)
-    if log_channel:
-        await log_channel.send(f"📘 **Log:** {message}")
     await log_action(bot, interaction.guild, f"{interaction.user.mention} koupil {pocet}x `{zbran}` za {celkova_cena:,}$")
-    await log_action(bot, interaction.guild, f"{interaction.user.mention} vybral {castka:,}$ z banky do hotovosti.")
-    await log_action(bot, interaction.guild, f"{interaction.user.mention} vybral týdenní odměny: {celkem:,}$ z rolí.")
+    
+   
 
 bot.run(TOKEN)
