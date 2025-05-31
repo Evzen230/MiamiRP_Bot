@@ -643,10 +643,13 @@ async def autocomplete_kup_auto(interaction: discord.Interaction, current: str):
 
 # Kup zbran command
 
-
 @tree.command(name="koupit-zbran", description="Koupit zbraň z nabídky")
 @app_commands.describe(zbran="Zbraň, kterou chceš koupit", pocet="Počet kusů")
 async def koupit_zbran(interaction: discord.Interaction, zbran: str, pocet: int = 1):
+    role_id = 1293617188988784667  # Změň na ID role s oprávněním
+     if not any(role.id == role_id for role in interaction.user.roles):
+        await interaction.response.send_message("❌ Nemáš oprávnění použít tento příkaz.", ephemeral=True)
+        return
     uzivatel = interaction.user
     data = get_or_create_user(uzivatel.id)
 
