@@ -1664,32 +1664,6 @@ async def odeber_drogy(interaction: discord.Interaction, uzivatel: discord.Membe
 
     await interaction.response.send_message(f"✅ Odebráno {mnozstvi}g `{droga}` uživateli {uzivatel.display_name}.", ephemeral=True)
 
-@tree.command(name="prikazy", description="Zobrazí seznam všech dostupných příkazů a jejich popis")
-async def prikazy(interaction: discord.Interaction):
-    embed = discord.Embed(title="📜 Seznam příkazů", color=discord.Color.green())
-
-    embed.add_field(name="/inventory [uživatel]", value="Zobrazí inventář hráče (auta, zbraně, věci, drogy).", inline=False)
-    embed.add_field(name="/koupit-zbran [zbraň] [počet]", value="Koupíš zbraň z nabídky, pokud máš oprávnění a peníze.", inline=False)
-    embed.add_field(name="/prodej-zbran [uživatel] [zbraň] [počet]", value="Prodáš zbraň jinému hráči, s potvrzením od kupujícího.", inline=False)
-    embed.add_field(name="/koupit-auto [auto]", value="Koupíš auto z nabídky.", inline=False)
-    embed.add_field(name="/prodej-auto [uživatel] [auto]", value="Prodáš auto jinému hráči, s potvrzením od kupujícího.", inline=False)
-    embed.add_field(name="/kup-veci [věc] [počet]", value="Koupíš věci potřebné pro výrobu nelegálních látek.", inline=False)
-    embed.add_field(name="/prodej-veci [uživatel] [věc] [počet] [cena]", value="Prodáš věci jinému hráči za určenou cenu.", inline=False)
-    embed.add_field(name="/vytvor [droga] [gramy]", value="Vyrobíš nelegální látku (vyžaduje nástroje a suroviny).", inline=False)
-    embed.add_field(name="/vyrob [droga] [gramy]", value="Začne výrobu drogy, trvá určitou dobu, může selhat.", inline=False)
-    embed.add_field(name="/pouzit-drogu [droga] [gramy]", value="Použiješ drogu ze svého inventáře, aktivují se efekty.", inline=False)
-    embed.add_field(name="/balance", value="Zobrazí stav peněženky a bankovního účtu.", inline=False)
-    embed.add_field(name="/vyber [částka]", value="Vybereš peníze z banky do peněženky.", inline=False)
-    embed.add_field(name="/vloz [částka]", value="Vložíš peníze z peněženky na bankovní účet.", inline=False)
-    embed.add_field(name="/collect", value="Vybereš týdenní odměnu podle rolí.", inline=False)
-    embed.add_field(name="/leaderboard", value="Zobrazí žebříček hráčů podle jejich peněz.", inline=False)
-    embed.add_field(name="/odeber-veci [uživatel] [věc] [počet]", value="Odebere věci z inventáře hráče (pouze policie/admin).", inline=False)
-    embed.add_field(name="/odeber-drogy [uživatel] [droga] [gramy]", value="Odebere drogy z inventáře hráče (pouze policie/admin).", inline=False)
-    embed.add_field(name="/reset-inventory [uživatel]", value="Resetuje celý inventář hráče (pouze policie/admin).", inline=False)
-    embed.add_field(name="/prikazy", value="Zobrazí tento seznam příkazů.", inline=False)
-
-    await interaction.response.send_message(embed=embed, ephemeral=True)
-
 @tree.command(name="try", description="Zkus něco provést a zjisti, jestli se to povedlo.")
 @app_commands.describe(akce="Co se pokoušíš udělat?")
 async def try_cmd(interaction: discord.Interaction, akce: str):
