@@ -68,7 +68,19 @@ DOSTUPNA_AUTA = [
     "Falcon Heritage 2021", "Ferdinand Jalapeno Turbo 2022",
     "Falcon Traveller 2022", "Chevlon Corbeta TZ 2014",
     "Chevlon Corbeta 8 2023", "Falcon Advance Bolt 2024", "Averon Anodic 2024",
-    "Celestial Truckatron 2024", "BKM Risen Roadster 2020"
+    "Celestial Truckatron 2024", "BKM Risen Roadster 2020","Falcon Prime Eques 2003", 
+    "Chevlon Captain PPV 2006", "Bullhorn Pueblo Pursuit 2018", "Chevlon Amigo LZR 2011",
+    "Falcon Interceptor Sedan 2017", "Bullhorn Prancer Pursuit 2011", "Falcon Stallion 350 2015", 
+    "Bullhorn Prancer Pursuit 2015", "Bullhorn Prancer Pursuit Widebody 2020", "Chevlon Corbeta TZ 2014", 
+    "Bullhorn Determinator SFP Fury 2022", "Chevlon Camion PPV 2008", "Chevlon Camion PPV 2018", "Chevlon Camion PPV 2021", 
+    "BKM Munich 2020", "Falcon Rampage PPV 2021", "Falcon Traveller SSV 2022", "Falcon Interceptor Utility 2013", "Falcon Interceptor Utility 2019", 
+    "Falcon Interceptor Utility 2020", "Averon Q8 2022", "Falcon Advance SSV 2018", "Bullhorn BH15 SSV 2009", "Falcon Advance Bolt 2024",
+    "Chevlon Platoro PPV 2019", "4-Wheeler", "Canyon Descender LEO", "Chevlon Commuter Van 2006", "Mobile Command 2005", "Prisoner Transport", 
+    "Emergency Services Falcon Advance+ 2020", "SWAT Truck 2011", "Fire Engine", "Heavy Tanker", "Ladder Truck", "Heavy Rescue", "Special Operations Unit", 
+    "Bullhorn Ambulance", "International Ambulance", "Medical Bus", "Canyon Descender", "4 Wheeler", "Paramedic SUV", "FD Chevlon Camion 2018", "Utility Falcon Advance+",
+    "Squad Falcon Advance+ 2020", "Brush Falcon Advance+ 2020", "Falcon Advance", "FD Bullhorn Prancer", "Mobile Command Center", "Vellfire Evertt Crew Cab 1995",
+    "Flatbed Tow Truck", "Cone Truck", "Falcon Advance+ Tow Truck 2020", "Falcon Advance+ Roadside Assist 2020", "Chevlon Platoro Utility", "Bucket Truck",
+    "Falcon Advance+ Utility", "Street Sweeper", "Salt Truck", "Traffic Light Trailer", "Traffic Arrow Trailer", "LED Message Board Trailer", "Asphalt Trailer", "Flood Light Trailer"
 ]
 
 #Ceník aut
@@ -258,7 +270,8 @@ DOSTUPNE_ZBRANE = [
     "Colt Python", "TEC-9", "Remington 870", "Lemat Revolver"
 ]
 #Věci na drogy a drogy
-DOSTUPNE_VECI = ["Chemikálie", "Sušička", "UV Lampa", "Chemické nádobí", "Edrin", "MDMA", "Cukr", "Formička", "Mák"]
+DOSTUPNE_VECI = ["Chemikálie", "Edrin", "Mdma prášek", "Barvivo", "Plnidlo", "Pseudoefedrin", "Čistič", "Cukr", "Máková pasta", "Semena marihuany", "Voda", "Hnojivo", "Ocet", "Listy koky", "Sušička", "Formička", "UV lampa", "Květináč", "Destilační sada", "Extraktor", "Ochranná maska", "Ochranné rukavice", "Tabletovací lis", "Pěstební světlo", "Varná sada"
+]
 CENY_VECI = {
     # 🔬 Suroviny
     "Chemikálie": 200,
