@@ -571,6 +571,8 @@ async def pridej_zbran(interaction: discord.Interaction,
             f"✅ Přidáno {pocet}x `{zbran}` hráči {uzivatel.display_name}.")
 
 
+
+
 @pridej_zbran.autocomplete("zbran")
 async def autocomplete_zbran_pridat(interaction: discord.Interaction,
                                         current: str):
@@ -954,28 +956,6 @@ async def koupit_zbran(interaction: discord.Interaction, zbran: str, pocet: int 
             ephemeral=True
         )
         return
-
-    # Remove money from buyer (hotovost first, then bank)
-    remaining_to_remove = celkova_cena
-    if data["hotovost"] >= remaining_to_remove:
-        data["hotovost"] -= remaining_to_remove
-    else:
-        remaining_to_remove -= data["hotovost"]
-        data["hotovost"] = 0
-        data["bank"] -= remaining_to_remove
-
-    # Přidání zbraně
-    if zbran in data["zbrane"]:
-        data["zbrane"][zbran] += pocet
-    else:
-        data["zbrane"][zbran] = pocet
-
-    save_data()
-
-    await interaction.response.send_message(
-        f"✅ Úspěšně jsi koupil {pocet}x `{zbran}` za {celkova_cena:,}$.",
-        ephemeral=False
-    )
     # Remove money from buyer (hotovost first, then bank)
     remaining_to_remove = celkova_cena
     if data["hotovost"] >= remaining_to_remove:
@@ -1176,17 +1156,16 @@ async def vybrat(interaction: discord.Interaction, castka: str):
             await interaction.response.send_message("❌ Neplatná částka. Použij číslo nebo 'all'.", ephemeral=True)
             return
 
-        if data.get("bank", 0) < actual_castka:
+        if data["bank"] < actual_castka:
             await interaction.response.send_message("❌ Nemáš dostatek peněz v bance.", ephemeral=True)
             return
 
         data["bank"] -= actual_castka
         data["hotovost"] += actual_castka
 
-    data["penize"] = data["hotovost"] + data["bank"]
-    save_data()
-
-    await interaction.response.send_message(f"✅ Vybral jsi {actual_castka:,} $ z banky do peněženky.")
+        data["penize"] = data["hotovost"] + data["bank"]
+        save_data()
+        await interaction.response.send_message(f"✅ Vybral jsi {actual_castka:,}$ z banky.")
 
 
 @tree.command(name="vlozit", description="Vloží peníze z peněženky do banky")
