@@ -9,6 +9,8 @@ from keep_alive import keep_alive
 import random
 from operator import itemgetter
 from discord.ui import View, Button
+from pymongo import MongoClient
+from bson.objectid import ObjectId
 
 
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
@@ -384,7 +386,6 @@ RECEPTY = {
 }
 # === Databáze ===
 
-# Připojení na MongoDB pomocí URI
 MONGO_URI = "mongodb+srv://Miami_RP_BOT:XoqLcDEiNJFz99Eb@miamirp.y7b8j.mongodb.net/?retryWrites=true&w=majority&appName=MiamiRP"
 client = MongoClient(MONGO_URI)
 db = client["miamirpbot"]
@@ -392,7 +393,7 @@ hraci = db["hraci"]
 
 def get_or_create_user(user_id):
     user_id = str(user_id)
-    user = users.find_one({"_id": user_id})
+    user = hraci.find_one({"_id": user_id})
 
     if not user:
         new_user = {
@@ -406,11 +407,11 @@ def get_or_create_user(user_id):
             "collect_timestamps": {},
             "veci": {}
         }
-        users.insert_one(new_user)
+        hraci.insert_one(new_user)
         return new_user
 
     update_fields = {}
-    
+
     # Doplnění chybějících polí
     for key, default in {
         "auta": {},
@@ -447,7 +448,7 @@ def get_or_create_user(user_id):
 
     # Pokud byly změny, aktualizuj dokument v DB
     if update_fields:
-        users.update_one({"_id": user_id}, {"$set": update_fields})
+        hraci.update_one({"_id": user_id}, {"$set": update_fields})
 
     return user
 # 📦 Seznam věcí pro autocomplete (z cen)
