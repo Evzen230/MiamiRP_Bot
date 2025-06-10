@@ -384,11 +384,19 @@ RECEPTY = {
 }
 # === Databáze ===
 
-DATA_FILE = "data.json"
+# Připojení na MongoDB pomocí URI
+MONGO_URI = "mongodb+srv://Miami_RP_BOT:XoqLcDEiNJFz99Eb@miamirp.y7b8j.mongodb.net/?retryWrites=true&w=majority&appName=MiamiRP"
+client = MongoClient(MONGO_URI)
+db = client["miamirpbot"]
+hraci = db["hraci"]
+
 def get_or_create_user(user_id):
     user_id = str(user_id)
-    if user_id not in databaze:
-        databaze[user_id] = {
+    user = users.find_one({"_id": user_id})
+
+    if not user:
+        new_user = {
+            "_id": user_id,
             "auta": {},
             "zbrane": {},
             "penize": 0,
@@ -398,46 +406,50 @@ def get_or_create_user(user_id):
             "collect_timestamps": {},
             "veci": {}
         }
-        save_data()
-        return databaze[user_id]
+        users.insert_one(new_user)
+        return new_user
 
-    # Convert old formats and ensure all fields exist
-    data = databaze[user_id]
+    update_fields = {}
+    
+    # Doplnění chybějících polí
+    for key, default in {
+        "auta": {},
+        "zbrane": {},
+        "penize": 0,
+        "hotovost": 0,
+        "bank": 0,
+        "veci": {},
+        "collect_timestamps": {},
+        "last_collect": None
+    }.items():
+        if key not in user:
+            update_fields[key] = default
+            user[key] = default
 
-    # Ensure all money fields exist
-    if "penize" not in data:
-        data["penize"] = 0
-    if "hotovost" not in data:
-        data["hotovost"] = 0
-    if "bank" not in data:
-        data["bank"] = 0
-    if "veci" not in data:
-        data["veci"] = {}
-
-    # Convert old list format to new dict format
-    if isinstance(data.get("auta"), list):
+    # Konverze starých seznamů na dict
+    if isinstance(user.get("auta"), list):
         auta_dict = {}
-        for auto in data["auta"]:
-            if auto in auta_dict:
-                auta_dict[auto] += 1
-            else:
-                auta_dict[auto] = 1
-        data["auta"] = auta_dict
+        for auto in user["auta"]:
+            auta_dict[auto] = auta_dict.get(auto, 0) + 1
+        update_fields["auta"] = auta_dict
+        user["auta"] = auta_dict
 
-    if isinstance(data.get("zbrane"), list):
+    if isinstance(user.get("zbrane"), list):
         zbrane_dict = {}
-        for zbran in data["zbrane"]:
-            if zbran in zbrane_dict:
-                zbrane_dict[zbran] += 1
-            else:
-                zbrane_dict[zbran] = 1
-        data["zbrane"] = zbrane_dict
+        for zbran in user["zbrane"]:
+            zbrane_dict[zbran] = zbrane_dict.get(zbran, 0) + 1
+        update_fields["zbrane"] = zbrane_dict
+        user["zbrane"] = zbrane_dict
 
-    # Update total money
-    data["penize"] = data["hotovost"] + data["bank"]
+    # Přepočítání peněz
+    user["penize"] = user.get("hotovost", 0) + user.get("bank", 0)
+    update_fields["penize"] = user["penize"]
 
-    return data
+    # Pokud byly změny, aktualizuj dokument v DB
+    if update_fields:
+        users.update_one({"_id": user_id}, {"$set": update_fields})
 
+    return user
 # 📦 Seznam věcí pro autocomplete (z cen)
 VECI_SEZNAM = list(CENY_VECI.keys())
 
