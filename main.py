@@ -1588,7 +1588,7 @@ async def odeber_drogy(interaction: discord.Interaction, uzivatel: discord.Membe
 @tree.command(name="auto-info", description="Zobrazí detailní informace o autě")
 @app_commands.describe(auto="Auto, o kterém chceš získat informace")
 @app_commands.autocomplete(auto=autocomplete_kup_auto)
-async def car_info(interaction: discord.Interaction, auto: str):
+async def auto_info(interaction: discord.Interaction, auto: str):
     if auto not in AUTA:
         await interaction.response.send_message("❌ Takové auto neexistuje.", ephemeral=True)
         return
@@ -1615,10 +1615,8 @@ async def car_info(interaction: discord.Interaction, auto: str):
 
     # Fuel emoji
     fuel_emoji = {
-        "Petrol": "⛽",
-        "Diesel": "🛢️",
-        "Electric": "🔋",
-        "Hybrid": "🔋⛽"
+        "Benzín": "⛽",
+        "Elektrika": "🔋",
     }.get(fuel, "⚙️")
 
     embed = discord.Embed(
