@@ -15,6 +15,8 @@ import urllib.parse
 import re
 
 
+from config import *
+
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 keep_alive()
 intents = discord.Intents.default()
@@ -25,25 +27,12 @@ intents.members = True
 bot = commands.Bot(command_prefix="/", intents=intents)
 tree = bot.tree
 
-# === Seznamy dostupných aut a zbraní ===
+# Configuration is now imported from config.py
+# You can edit ROLE_ODMENY, AUTA, CENY_ZBRANI, etc. in config.py
+    # All configuration moved to config.py
 
-
-# Role ID a týdenní odměna (v dolarech)
-ROLE_ODMENY = {
-    1293617189005557873: 3000,      #Občan
-    1293617189005557870: 25000,     #Ředitel: FHP
-    1293617189005557868: 25000,     #Ředitel: MPD
-    1293617189005557867: 10000,     #Ředitel: MFD
-    1293617189005557865: 10000,     #Ředitel: FDOT
-    1293617189005557864: 25000,     #Ředitel: FBI
-    1293617189005557866: 10000,     #Ředitel: EMS
-    1293617189005557869: 9500,      #Ředitel: MGMC
-    1346163519070146681: 9500,      #Ředitel: IRS
-    1330524261030301707: 9500,      #Ředitel: DMV
-}
-# Auta na přidávání
-DOSTUPNA_AUTA = [
-    "Falcon Stallion 350 1969", "Bullhorn Prancer 1969",
+# MongoDB connection setup
+MONGO_URI = os.getenv("MONGO_URI")
     "Falcon Advance 100 Holiday Edition 1956", "Chevlon Corbeta C2 1967",
     "Sentinel Platinum 1968", "Bullhorn Foreman 1988",
     "Arrow Phoenix Nationals 1977", "Vellfire Runabout 1984",
@@ -70,27 +59,7 @@ DOSTUPNA_AUTA = [
     "Stuttgart Vierturig 2021", "Takeo Experience 2021", "Averon R8 2017",
     "Strugatti Ettore 2020", "Surrey 650S 2016", "LTS5-V Blackwing 2023",
     "Falcon Heritage 2021", "Ferdinand Jalapeno Turbo 2022",
-    "Falcon Traveller 2022", "Chevlon Corbeta TZ 2014",
-    "Chevlon Corbeta 8 2023", "Falcon Advance Bolt 2024", "Averon Anodic 2024",
-    "Celestial Truckatron 2024", "BKM Risen Roadster 2020","Falcon Prime Eques 2003",
-    "Chevlon Captain PPV 2006", "Bullhorn Pueblo Pursuit 2018", "Chevlon Amigo LZR 2011",
-    "Falcon Interceptor Sedan 2017", "Bullhorn Prancer Pursuit 2011", "Falcon Stallion 350 2015",
-    "Bullhorn Prancer Pursuit 2015", "Bullhorn Prancer Pursuit Widebody 2020", "Chevlon Corbeta TZ 2014",
-    "Bullhorn Determinator SFP Fury 2022", "Chevlon Camion PPV 2008", "Chevlon Camion PPV 2018", "Chevlon Camion PPV 2021",
-    "BKM Munich 2020", "Falcon Rampage PPV 2021", "Falcon Traveller SSV 2022", "Falcon Interceptor Utility 2013", "Falcon Interceptor Utility 2019",
-    "Falcon Interceptor Utility 2020", "Averon Q8 2022", "Falcon Advance SSV 2018", "Bullhorn BH15 SSV 2009", "Falcon Advance Bolt 2024",
-    "Chevlon Platoro PPV 2019", "4-Wheeler", "Canyon Descender LEO", "Chevlon Commuter Van 2006", "Mobile Command 2005", "Prisoner Transport",
-    "Emergency Services Falcon Advance+ 2020", "SWAT Truck 2011", "Fire Engine", "Heavy Tanker", "Ladder Truck", "Heavy Rescue", "Special Operations Unit",
-    "Bullhorn Ambulance", "International Ambulance", "Medical Bus", "Canyon Descender", "4 Wheeler", "Paramedic SUV", "FD Chevlon Camion 2018", "Utility Falcon Advance+",
-    "Squad Falcon Advance+ 2020", "Brush Falcon Advance+ 2020", "Falcon Advance", "FD Bullhorn Prancer", "Mobile Command Center", "Vellfire Evertt Crew Cab 1995",
-    "Flatbed Tow Truck", "Cone Truck", "Falcon Advance+ Tow Truck 2020", "Falcon Advance+ Roadside Assist 2020", "Chevlon Platoro Utility", "Bucket Truck",
-    "Falcon Advance+ Utility", "Street Sweeper", "Salt Truck", "Traffic Light Trailer", "Traffic Arrow Trailer", "LED Message Board Trailer", "Asphalt Trailer", "Flood Light Trailer"
-]
-
-#Ceník aut
-AUTA = {
-    # Classic
-    "Falcon Stallion 350 1969": {"cena": 260000, "role": None},
+    
     "Bullhorn Prancer 1969": {"cena": 245000, "role": None},
     "Falcon Advance 100 Holiday Edition 1956": {"cena": 95000, "role": None},
     "Chevlon Corbeta C2 1967": {"cena": 185000, "role": None},
@@ -238,157 +207,7 @@ AUTA = {
     "Traffic Arrow Trailer": {'cena': 0, 'role': '1293617189005557865'},
     "LED Message Board Trailer": {'cena': 0, 'role': '1293617189005557865'},
     "Asphalt Trailer": {'cena': 0, 'role': '1293617189005557865'},
-    "Flood Light Trailer": {'cena': 0, 'role': '1293617189005557865'},
-}
-
-
-#Ceník zbraní
-CENY_ZBRANI = {
-    # Zbraně typu A:
-    "Beretta M9": 700,
-    "Desert Eagle": 900,
-    "Colt M1911": 750,
-    "Colt Python": 1000,
-    "Lemat Revolver": 1200,
-
-    # Zbraně typu B:
-    "TEC-9": 1000,
-    "Skorpion": 1100,
-    "Kriss Vector": 1500,
-
-    #Zbraně typu C:
-    "M14": 2000,
-    "AK47": 2500,
-    "PPSH 41": 2300,
-    "LMT L129A1": 2600,
-    "Remington 870": 2000,
-
-    #Zbraně typu D:
-    "Remington MSR": 15000,
-    "M249":  12000
-}
-#Zbraně na přidávání
-DOSTUPNE_ZBRANE = [
-    "Beretta M9", "M249", "Remington MSR", "M14", "AK47", "PPSH 41",
-    "Desert Eagle", "Colt M1911", "Kriss Vector", "LMT L129A1", "Skorpion",
-    "Colt Python", "TEC-9", "Remington 870", "Lemat Revolver"
-]
-#Věci na drogy a drogy
-DOSTUPNE_VECI = ["Chemikálie", "Edrin", "Mdma prášek", "Barvivo", "Plnidlo", "Pseudoefedrin", "Čistič", "Cukr", "Máková pasta", "Semena marihuany", "Voda", "Hnojivo", "Ocet", "Listy koky", "Sušička", "Formička", "UV lampa", "Květináč", "Destilační sada", "Extraktor", "Ochranná maska", "Ochranné rukavice", "Tabletovací lis", "Pěstební světlo", "Varná sada"
-]
-CENY_VECI = {
-    # 🔬 Suroviny
-    "Chemikálie": 200,
-    "Edrin": 300,
-    "Mdma prášek": 200,
-    "Barvivo": 50,
-    "Plnidlo": 40,
-    "Pseudoefedrin": 180,
-    "Čistič": 90,
-    "Cukr": 50,
-    "Máková pasta": 150,
-    "Semena marihuany": 250,
-    "Voda": 10,
-    "Hnojivo": 30,
-    "Ocet": 15,
-    "Listy koky": 350,
-
-    # 🛠️ Nástroje
-    "Sušička": 1500,
-    "Formička": 1000,
-    "UV lampa": 1000,
-    "Květináč": 150,
-    "Destilační sada": 2500,
-    "Extraktor": 2000,
-    "Ochranná maska": 800,
-    "Ochranné rukavice": 100,
-    "Tabletovací lis": 3000,
-    "Pěstební světlo": 1000,
-    "Varná sada": 1800
-}
-DROGY = ["Marihuana", "Kokain", "Metamfetamin", "Pervitin", "Extáze", "Heroin"]
-VYROBA_COOLDOWN = 2  # minutes
-RECEPTY = {
-    "Marihuana": {
-        "suroviny": {
-            "Semena marihuany": 1,
-            "Voda": 2,
-            "Hnojivo": 1
-        },
-        "nastroje": {
-            "Květináč": 1,
-            "UV Lampa": 1,
-            "Sušička": 1
-        },
-        "cas": 5,  # minut za 10g
-        "selhani": 0
-    },
-    "Kokain": {
-        "suroviny": {
-            "Listy koky": 3,
-            "Chemikálie": 2
-        },
-        "nastroje": {
-            "Extraktor": 1,
-            "Ochranné rukavice": 1
-        },
-        "cas": 6,
-        "selhani": 0.10
-    },
-    "Metamfetamin": {
-        "suroviny": {
-            "Chemikálie": 3,
-            "Pseudoefedrin": 2
-        },
-        "nastroje": {
-            "Destilační sada": 1,
-            "Ochranné rukavice": 1
-        },
-        "cas": 7,
-        "selhani": 0.12
-    },
-    "Pervitin": {
-        "suroviny": {
-            "Pseudoefedrin": 3,
-            "Čistič": 1
-        },
-        "nastroje": {
-            "Destilační sada": 1,
-            "Ochranné rukavice": 1
-        },
-        "cas": 5,
-        "selhani": 0.09
-    },
-    "Extáze": {
-        "suroviny": {
-            "MDMA prášek": 2,
-            "Barvivo": 1,
-            "Plnidlo": 1
-        },
-        "nastroje": {
-            "Formička": 1,
-            "Ochranné rukavice": 1
-        },
-        "cas": 5,
-        "selhani": 0.07
-    },
-    "Heroin": {
-        "suroviny": {
-            "Mák": 2,
-            "Ocet": 1,
-            "Chemikálie": 1
-        },
-        "nastroje": {
-            "Destilační sada": 1,
-            "Ochranná maska": 1
-        },
-        "cas": 6,
-        "selhani": 0.11
-    }
-}
-# === Databáze ===
-
-MONGO_URI = os.getenv("MONGO_URI")
+    
 
 if not MONGO_URI:
     raise ValueError("MONGO_URI environment variable is not set")
@@ -526,8 +345,6 @@ async def autocomplete_veci_drogy(interaction: discord.Interaction, current: str
         app_commands.Choice(name=item, value=item)
         for item in dostupne_polozky if current.lower() in item.lower()
     ][:25]
-
-LOG_CHANNEL_ID = 1293617189055758433
 
 async def log_action(bot, guild: discord.Guild, message: str):
     log_channel = guild.get_channel(LOG_CHANNEL_ID)
@@ -1340,7 +1157,7 @@ async def leaderboard(interaction: discord.Interaction, stranka: int = 1):
 
     leaderboard_data = []
     for user in all_users:
-        user_id = int(user["_id"])
+        user_id = str(user["_id"])  # Keep as string, MongoDB stores as string
         total = user.get("hotovost", 0) + user.get("bank", 0)
         leaderboard_data.append((user_id, total))
 
@@ -1363,7 +1180,7 @@ async def leaderboard(interaction: discord.Interaction, stranka: int = 1):
     )
 
     for index, (user_id, total) in enumerate(strankovany, start=zacatek + 1):
-        user = interaction.guild.get_member(user_id)
+        user = interaction.guild.get_member(int(user_id))  # Convert to int for Discord API
         jmeno = user.display_name if user else f"<@{user_id}>"
         embed.add_field(
             name=f"#{index} – {jmeno}",
@@ -1773,8 +1590,6 @@ async def recepty(interaction: discord.Interaction):
 
     await interaction.response.send_message(embed=embed)
 
-ADMIN_ROLE_ID = 1378111107780313209  # Změň na ID admin role
-
 def is_admin(user: discord.User):
     return any(role.id == ADMIN_ROLE_ID for role in user.roles)
 
@@ -1812,9 +1627,6 @@ async def pridej_drogy(interaction: discord.Interaction, uzivatel: discord.Membe
 
 
     await interaction.response.send_message(f"✅ Přidáno {mnozstvi}g `{droga}` uživateli {uzivatel.display_name}.", ephemeral=True)
-
-ADMIN_ROLE_ID = 1378111107780313209  # Změň na ID admin role
-POLICE_ROLE_ID = 1378711315119607808  # Změň na ID role policie
 
 def has_permission(user: discord.User):
     return any(role.id in (ADMIN_ROLE_ID, POLICE_ROLE_ID) for role in user.roles)
