@@ -174,7 +174,13 @@ async def autocomplete_veci_drogy(interaction: discord.Interaction, current: str
 async def log_action(bot, guild: discord.Guild, message: str):
     log_channel = guild.get_channel(LOG_CHANNEL_ID)
     if log_channel:
-        await log_channel.send(f"📘 **Log:** {message}")
+        embed = discord.Embed(
+            description=message,
+            color=discord.Color.blue(),
+            timestamp=datetime.utcnow()
+        )
+        embed.set_footer(text="Bot Action Log")
+        await log_channel.send(embed=embed)
 
 
 class ConfirmationView(discord.ui.View):
