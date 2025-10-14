@@ -20,52 +20,6 @@ ROLE_ODMENY = {
     1330524261030301707: 9500,      # Ředitel: DMV
 }
 
-# === SEZNAM AUT ===
-DOSTUPNA_AUTA = [
-    "Falcon Stallion 350 1969", "Bullhorn Prancer 1969",
-    "Falcon Advance 100 Holiday Edition 1956", "Chevlon Corbeta C2 1967",
-    "Sentinel Platinum 1968", "Bullhorn Foreman 1988",
-    "Arrow Phoenix Nationals 1977", "Vellfire Runabout 1984",
-    "Chevlon L/35 Extended 1981", "Chevlon Inferno 1981", "Chevlon L/15 1981",
-    "Falcon Traveller 2003", "Chevlon Camion 2002", "Falcon Prime Eques 2003",
-    "Vellfire Evertt 1995", "Overland Apache 1995", "Vellfire Prima 2009",
-    "Overland Apache 2011", "Overland Buckaroo 2018", "Falcon Scavenger 2016",
-    "Falcon Fission 2015", "Chevlon Captain 2009", "Vellfire Riptide 2020",
-    "Bullhorn BH15 2009", "Elysion Slick 2014", "Chevlon Commuter Van 2006",
-    "Chevlon Amigo LZR 2016", "Chevlon Landslide 2007",
-    "Falcon Traveller 2022", "Navara Boundary 2022",
-    "Bullhorn Determinator 2008", "Chevlon Camion 2021", "Chevlon Camion 2008",
-    "Chevlon Revver 2005", "Falcon Rampage Bigfoot 2-Door 2021",
-    "Bullhorn Prancer 2011", "Navara Imperium 2020", "Falcon Advance 2018",
-    "Falcon Advance Beast 2017", "Falcon Rampage Beast 2021",
-    "Falcon Advance 2022", "Bullhorn Prancer Widebody 2020",
-    "Bullhorn Determinator SFP Fury 2022", "Vellfire Prairie 2022",
-    "Bullhorn Pueblo 2018", "Navara Horizon 2013", "Chevlon Antilope 1994",
-    "Leland LTS 2010", "Overland Apache SFP 2020", "Stuttgart Landschaft 2022",
-    "Vellfire Pioneer 2019", "Falcon Stalion 350", "Chevlon Amigo S 2011",
-    "Chevlon Amigo S 2016", "Amigo LZR 2011", "Averon S5 2010",
-    "Leland Vault 2020", "Averon RS3 2020", "Stuttgart Executive 2021",
-    "Terrain Traveller 2022", "Averon Q8 2022", "BKM Munich 2020",
-    "Stuttgart Vierturig 2021", "Takeo Experience 2021", "Averon R8 2017",
-    "Strugatti Ettore 2020", "Surrey 650S 2016", "LTS5-V Blackwing 2023",
-    "Falcon Heritage 2021", "Ferdinand Jalapeno Turbo 2022",
-    "Falcon Traveller 2022", "Chevlon Corbeta TZ 2014",
-    "Chevlon Corbeta 8 2023", "Falcon Advance Bolt 2024", "Averon Anodic 2024",
-    "Celestial Truckatron 2024", "BKM Risen Roadster 2020","Falcon Prime Eques 2003",
-    "Chevlon Captain PPV 2006", "Bullhorn Pueblo Pursuit 2018", "Chevlon Amigo LZR 2011",
-    "Falcon Interceptor Sedan 2017", "Bullhorn Prancer Pursuit 2011", "Falcon Stallion 350 2015",
-    "Bullhorn Prancer Pursuit 2015", "Bullhorn Prancer Pursuit Widebody 2020", "Chevlon Corbeta TZ 2014",
-    "Bullhorn Determinator SFP Fury 2022", "Chevlon Camion PPV 2008", "Chevlon Camion PPV 2018", "Chevlon Camion PPV 2021",
-    "BKM Munich 2020", "Falcon Rampage PPV 2021", "Falcon Traveller SSV 2022", "Falcon Interceptor Utility 2013", "Falcon Interceptor Utility 2019",
-    "Falcon Interceptor Utility 2020", "Averon Q8 2022", "Falcon Advance SSV 2018", "Bullhorn BH15 SSV 2009", "Falcon Advance Bolt 2024",
-    "Chevlon Platoro PPV 2019", "4-Wheeler", "Canyon Descender LEO", "Chevlon Commuter Van 2006", "Mobile Command 2005", "Prisoner Transport",
-    "Emergency Services Falcon Advance+ 2020", "SWAT Truck 2011", "Fire Engine", "Heavy Tanker", "Ladder Truck", "Heavy Rescue", "Special Operations Unit",
-    "Bullhorn Ambulance", "International Ambulance", "Medical Bus", "Canyon Descender", "4 Wheeler", "Paramedic SUV", "FD Chevlon Camion 2018", "Utility Falcon Advance+",
-    "Squad Falcon Advance+ 2020", "Brush Falcon Advance+ 2020", "Falcon Advance", "FD Bullhorn Prancer", "Mobile Command Center", "Vellfire Evertt Crew Cab 1995",
-    "Flatbed Tow Truck", "Cone Truck", "Falcon Advance+ Tow Truck 2020", "Falcon Advance+ Roadside Assist 2020", "Chevlon Platoro Utility", "Bucket Truck",
-    "Falcon Advance+ Utility", "Street Sweeper", "Salt Truck", "Traffic Light Trailer", "Traffic Arrow Trailer", "LED Message Board Trailer", "Asphalt Trailer", "Flood Light Trailer"
-]
-
 # === CENÍK AUT ===
 # Format: "Název auta": {"cena": částka, "role": None nebo "role_id || role_id", "top_speed": km/h, "class": kategorie, "type": typ, "fuel": palivo}
 AUTA = {

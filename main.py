@@ -328,7 +328,7 @@ async def pridej_auto(interaction: discord.Interaction,
                 "❌ Nemáš oprávnění použít tento příkaz.", ephemeral=True)
             await log_action(bot, interaction.guild, f"❌ {interaction.user.mention} pokusil se použít /pridej-auto bez oprávnění")
             return
-        if auto not in DOSTUPNA_AUTA:
+        if auto not in AUTA:
             await interaction.response.send_message(
                 f"❌ Auto `{auto}` není v seznamu dostupných aut.", ephemeral=True)
             return
@@ -347,7 +347,7 @@ async def pridej_auto(interaction: discord.Interaction,
 async def autocomplete_auto_pridat(interaction: discord.Interaction,
                                        current: str):
         return [
-            app_commands.Choice(name=a, value=a) for a in DOSTUPNA_AUTA
+            app_commands.Choice(name=a, value=a) for a in AUTA.keys()
             if current.lower() in a.lower()
         ][:25]
 
