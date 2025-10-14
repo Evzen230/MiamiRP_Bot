@@ -260,7 +260,7 @@ async def pridej_zbran(interaction: discord.Interaction,
 
         await interaction.response.send_message(
             f"✅ Přidáno {pocet}x `{zbran}` hráči {uzivatel.display_name}.")
-        await log_action(bot, interaction.guild, f"✅ {interaction.user.mention} přidal {pocet}x {zbran} hráči {uzivatel.mention}")
+        await log_action(bot, interaction.guild, f"{interaction.user.mention} přidal {pocet}x {zbran} hráči {uzivatel.mention}")
 
 
 
@@ -296,7 +296,7 @@ async def odeber_zbran(interaction: discord.Interaction,
             await interaction.response.send_message(
                 f"✅ Odebráno {pocet}x `{zbran}` hráči {uzivatel.display_name}."
             )
-            await log_action(bot, interaction.guild, f"✅ {interaction.user.mention} odebral {pocet}x {zbran} hráči {uzivatel.mention}")
+            await log_action(bot, interaction.guild, f"{interaction.user.mention} odebral {pocet}x {zbran} hráči {uzivatel.mention}")
         else:
             await interaction.response.send_message(
                 f"❌ Zbraň `{zbran}` nebyla nalezena u {uzivatel.display_name}."
@@ -341,7 +341,7 @@ async def pridej_auto(interaction: discord.Interaction,
 
         await interaction.response.send_message(
             f"✅ Přidáno {pocet}x `{auto}` hráči {uzivatel.display_name}.")
-        await log_action(bot, interaction.guild, f"✅ {interaction.user.mention} přidal {pocet}x {auto} hráči {uzivatel.mention}")
+        await log_action(bot, interaction.guild, f"{interaction.user.mention} přidal {pocet}x {auto} hráči {uzivatel.mention}")
 
 @pridej_auto.autocomplete("auto")
 async def autocomplete_auto_pridat(interaction: discord.Interaction,
@@ -374,7 +374,7 @@ async def odeber_auto(interaction: discord.Interaction,
 
             await interaction.response.send_message(
                 f"✅ Odebráno {pocet}x `{auto}` hráči {uzivatel.display_name}.")
-            await log_action(bot, interaction.guild, f"✅ {interaction.user.mention} odebral {pocet}x {auto} hráči {uzivatel.mention}")
+            await log_action(bot, interaction.guild, f"{interaction.user.mention} odebral {pocet}x {auto} hráči {uzivatel.mention}")
         else:
             await interaction.response.send_message(
                 f"❌ Auto `{auto}` nebylo nalezeno u {uzivatel.display_name}.")
@@ -437,6 +437,7 @@ async def reset_inventory(interaction: discord.Interaction, uzivatel: discord.Me
         hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
 
         await interaction.response.send_message(f"♻️ Inventář hráče {uzivatel.display_name} byl úspěšně resetován.")
+        await log_action(bot, interaction.guild, f"{interaction.user.mention} resetoval inventář hráče {uzivatel.mention}")
 
 
 # === PŘÍKAZY NA PENÍZE ===
@@ -478,7 +479,7 @@ async def pridej_penize(interaction: discord.Interaction, uzivatel: discord.Memb
     hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
 
     await interaction.response.send_message(f"✅ Přidáno {castka}$ hráči {uzivatel.display_name}.")
-    await log_action(bot, interaction.guild, f"✅ {interaction.user.mention} přidal {castka}$ hráči {uzivatel.mention}")
+    await log_action(bot, interaction.guild, f"{interaction.user.mention} přidal {castka}$ hráči {uzivatel.mention}")
 
 # Odeber penize command
 @tree.command(name="odeber-penize", description="Odebere peníze hráči (admin)")
@@ -518,7 +519,7 @@ async def odeber_penize(interaction: discord.Interaction, uzivatel: discord.Memb
     hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
 
     await interaction.response.send_message(f"✅ Odebráno {actual_castka}$ hráči {uzivatel.display_name}.")
-    await log_action(bot, interaction.guild, f"✅ {interaction.user.mention} odebral {actual_castka}$ hráči {uzivatel.mention}")
+    await log_action(bot, interaction.guild, f"{interaction.user.mention} odebral {actual_castka}$ hráči {uzivatel.mention}")
 
 # Reset penize command
 
@@ -536,7 +537,7 @@ async def reset_penize(interaction: discord.Interaction, uzivatel: discord.Membe
         hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
 
         await interaction.response.send_message(f"♻️ Peníze hráče {uzivatel.display_name} byly vynulovány.")
-        await log_action(bot, interaction.guild, f"♻️ {interaction.user.mention} resetoval peníze hráče {uzivatel.mention}")
+        await log_action(bot, interaction.guild, f"{interaction.user.mention} resetoval peníze hráče {uzivatel.mention}")
 
 # Pay command
 
@@ -574,7 +575,7 @@ async def posli_penize(interaction: discord.Interaction, cil: discord.Member, ca
     hraci.update_one({"_id": str(cil.id)}, {"$set": prijemce_data})
 
     await interaction.response.send_message(f"💸 Poslal jsi {castka}$ hráči {cil.display_name}.")
-    await log_action(bot, interaction.guild, f"💸 {interaction.user.mention} poslal {castka}$ hráči {cil.mention}")
+    await log_action(bot, interaction.guild, f"{interaction.user.mention} poslal {castka}$ hráči {cil.mention}")
 # Kup auto command
 
 @tree.command(name="koupit-auto", description="Koupí auto, pokud máš dost peněz a případnou roli")
@@ -629,6 +630,7 @@ async def koupit_auto(interaction: discord.Interaction, auto: str):
     await interaction.response.send_message(
         f"✅ Úspěšně jsi koupil **{auto}** za **{cena:,} $**."
     )
+    await log_action(bot, interaction.guild, f"{user.mention} koupil {auto} za {cena:,}$")
 
 @koupit_auto.autocomplete("auto")
 async def autocomplete_kup_auto(interaction: discord.Interaction, current: str):
@@ -684,6 +686,7 @@ async def koupit_zbran(interaction: discord.Interaction, zbran: str, pocet: int 
 
 
     await interaction.response.send_message(f"✅ Koupil jsi {pocet}x `{zbran}` za {celkova_cena:,}$. Zůstatek: {data['penize']:,}$.")
+    await log_action(bot, interaction.guild, f"{uzivatel.mention} koupil {pocet}x {zbran} za {celkova_cena:,}$")
 
 @koupit_zbran.autocomplete("zbran")
 async def autocomplete_koupit_zbran(interaction: discord.Interaction, current: str):
@@ -754,6 +757,7 @@ async def prodej_auto(interaction: discord.Interaction, kupec: discord.Member, a
             color=discord.Color.green()
         )
         await interaction.followup.send(embed=success_embed)
+        await log_action(bot, interaction.guild, f"{interaction.user.mention} prodal {auto} hráči {kupec.mention} za {cena:,}$")
     elif view.result is False:
         fail_embed = discord.Embed(
             title="❌ Obchod zrušen",
@@ -834,6 +838,7 @@ async def prodej_zbran(interaction: discord.Interaction, kupec: discord.Member, 
             color=discord.Color.green()
         )
         await interaction.followup.send(embed=success_embed)
+        await log_action(bot, interaction.guild, f"{interaction.user.mention} prodal {zbran} hráči {kupec.mention} za {cena:,}$")
     elif view.result is False:
         fail_embed = discord.Embed(
             title="❌ Obchod zrušen",
@@ -1136,6 +1141,7 @@ async def prodej_veci(interaction: discord.Interaction, cil: discord.Member, vec
         embed=None,
         view=None
     )
+    await log_action(bot, interaction.guild, f"{prodavajici.mention} prodal {mnozstvi}x {vec} hráči {cil.mention} za {cena:,}$")
 
 
 @tree.command(name="kup-veci", description="Kup si suroviny nebo nástroje")
@@ -1217,6 +1223,7 @@ async def vyrob(interaction: discord.Interaction, droga: str, mnozstvi: int = 10
 
     await interaction.response.send_message(
         f"🧪 Začal jsi vyrábět {mnozstvi}g `{droga}`.\n⏳ Dokončení za {celkovy_cas} minut...", ephemeral=True)
+    await log_action(bot, interaction.guild, f"{uzivatel.mention} začal vyrábět {mnozstvi}g {droga}")
 
     # ASYNC VÝROBA
     async def dokonci_vyrobu():
@@ -1396,6 +1403,7 @@ async def pozij_drogu(interaction: discord.Interaction, droga: str, mnozstvi: st
         color=discord.Color.purple()
     )
     await interaction.response.send_message(embed=embed)
+    await log_action(bot, interaction.guild, f"{uzivatel.mention} požil {mnozstvi_g:.2f}g {droga}")
 
 
 
@@ -1447,6 +1455,7 @@ async def pridej_veci(interaction: discord.Interaction, uzivatel: discord.Member
 
 
     await interaction.response.send_message(f"✅ Přidáno {mnozstvi}× `{vec}` uživateli {uzivatel.display_name}.", ephemeral=True)
+    await log_action(bot, interaction.guild, f"{interaction.user.mention} přidal {mnozstvi}× {vec} hráči {uzivatel.mention}")
 
 
 @tree.command(name="pridej-drogy", description="Přidá drogy do inventáře uživatele (admin)")
@@ -1465,6 +1474,7 @@ async def pridej_drogy(interaction: discord.Interaction, uzivatel: discord.Membe
 
 
     await interaction.response.send_message(f"✅ Přidáno {mnozstvi}g `{droga}` uživateli {uzivatel.display_name}.", ephemeral=True)
+    await log_action(bot, interaction.guild, f"{interaction.user.mention} přidal {mnozstvi}g {droga} hráči {uzivatel.mention}")
 
 def has_permission(user: discord.User):
     return any(role.id == ADMIN_ROLE_ID for role in user.roles)
@@ -1533,6 +1543,7 @@ async def odeber_veci(interaction: discord.Interaction, uzivatel: discord.Member
 
 
     await interaction.response.send_message(f"✅ Odebráno {mnozstvi}× `{vec}` uživateli {uzivatel.display_name}.", ephemeral=True)
+    await log_action(bot, interaction.guild, f"{interaction.user.mention} odebral {mnozstvi}× {vec} hráči {uzivatel.mention}")
 
 
 @tree.command(name="odeber-drogy", description="Odeber drogy z inventáře uživatele (admin/policie)")
@@ -1557,6 +1568,7 @@ async def odeber_drogy(interaction: discord.Interaction, uzivatel: discord.Membe
 
 
     await interaction.response.send_message(f"✅ Odebráno {mnozstvi}g `{droga}` uživateli {uzivatel.display_name}.", ephemeral=True)
+    await log_action(bot, interaction.guild, f"{interaction.user.mention} odebral {mnozstvi}g {droga} hráči {uzivatel.mention}")
 
 @tree.command(name="prikazy", description="Zobrazí seznam všech dostupných příkazů a jejich popis")
 async def prikazy(interaction: discord.Interaction):
