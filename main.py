@@ -1585,7 +1585,7 @@ async def odeber_drogy(interaction: discord.Interaction, uzivatel: discord.Membe
     await interaction.response.send_message(f"✅ Odebráno {mnozstvi}g `{droga}` uživateli {uzivatel.display_name}.", ephemeral=True)
     await log_action(bot, interaction.guild, f"{interaction.user.mention} odebral {mnozstvi}g {droga} hráči {uzivatel.mention}")
 
-@tree.command(name="car-info", description="Zobrazí detailní informace o autě")
+@tree.command(name="auto-info", description="Zobrazí detailní informace o autě")
 @app_commands.describe(auto="Auto, o kterém chceš získat informace")
 @app_commands.autocomplete(auto=autocomplete_kup_auto)
 async def car_info(interaction: discord.Interaction, auto: str):
@@ -1626,7 +1626,7 @@ async def car_info(interaction: discord.Interaction, auto: str):
         color=discord.Color.blue()
     )
     embed.add_field(name="💰 Cena", value=price_text, inline=True)
-    embed.add_field(name="🏁 Maximální rychlost", value=f"{top_speed} km/h" if top_speed != "N/A" else "N/A", inline=True)
+    embed.add_field(name="🏁 Maximální rychlost", value=f"{top_speed} mph" if top_speed != "N/A" else "N/A", inline=True)
     embed.add_field(name="📊 Třída", value=car_class, inline=True)
     embed.add_field(name="🚙 Typ vozidla", value=car_type, inline=True)
     embed.add_field(name=f"{fuel_emoji} Palivo", value=fuel, inline=True)
