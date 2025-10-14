@@ -1,4 +1,3 @@
-import datetime
 import discord
 from discord import app_commands
 import json
@@ -11,7 +10,9 @@ from operator import itemgetter
 from discord.ui import View, Button
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-from datetime import datetime
+from datetime import datetime, timedelta
+import urllib.parse
+import re
 
 
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
@@ -388,9 +389,47 @@ RECEPTY = {
 # === Databáze ===
 
 MONGO_URI = os.getenv("MONGO_URI")
-client = MongoClient(MONGO_URI)
-db = client["miamirpbot"]
-hraci = db["hraci"]
+
+if not MONGO_URI:
+    raise ValueError("MONGO_URI environment variable is not set")
+
+# Parse and properly encode MongoDB URI
+def encode_mongo_uri(uri):
+    """Properly encode username and password in MongoDB URI"""
+    try:
+        # Pattern to extract mongodb://username:password@host or mongodb+srv://username:password@host
+        pattern = r'^(mongodb(?:\+srv)?://)([^:]+):([^@]+)@(.+)$'
+        match = re.match(pattern, uri)
+        
+        if match:
+            protocol, username, password, rest = match.groups()
+            # URL encode username and password
+            encoded_username = urllib.parse.quote_plus(username)
+            encoded_password = urllib.parse.quote_plus(password)
+            encoded_uri = f"{protocol}{encoded_username}:{encoded_password}@{rest}"
+            print(f"🔧 Encoded MongoDB URI (username: {username}, host: {rest.split('?')[0].split('/')[0]})")
+            return encoded_uri
+        else:
+            # If no credentials in URI, return as is
+            print(f"⚠️ Could not parse MongoDB URI pattern, using as-is")
+            return uri
+    except Exception as e:
+        print(f"Warning: Could not parse MongoDB URI: {e}")
+        return uri
+
+MONGO_URI_ENCODED = encode_mongo_uri(MONGO_URI)
+
+try:
+    client = MongoClient(MONGO_URI_ENCODED, serverSelectionTimeoutMS=5000)
+    client.admin.command('ping')
+    print("✅ Successfully connected to MongoDB!")
+    db = client["miamirpbot"]
+    hraci = db["hraci"]
+except Exception as e:
+    print(f"❌ MongoDB connection error: {e}")
+    print("Please ensure your MONGO_URI is properly formatted.")
+    print("Format: mongodb+srv://username:password@cluster.mongodb.net/database")
+    raise
 
 def get_or_create_user(user_id):
     user_id = str(user_id)
@@ -486,25 +525,12 @@ async def autocomplete_veci_drogy(interaction: discord.Interaction, current: str
         for item in dostupne_polozky if current.lower() in item.lower()
     ][:25]
 
-# Načti data
-try:
-    with open(DATA_FILE, "r") as f:
-        databaze = json.load(f)
-except (FileNotFoundError, json.JSONDecodeError):
-    databaze = {}
-
-LOG_CHANNEL_ID = 1293617189055758433  # Změň na ID kanálu, kam chceš logy posílat
+LOG_CHANNEL_ID = 1293617189055758433
 
 async def log_action(bot, guild: discord.Guild, message: str):
     log_channel = guild.get_channel(LOG_CHANNEL_ID)
     if log_channel:
         await log_channel.send(f"📘 **Log:** {message}")
-
-
-
-def save_data():
-    with open(DATA_FILE, "w") as f:
-        json.dump(databaze, f, indent=4)
 
 
 class ConfirmationView(discord.ui.View):
