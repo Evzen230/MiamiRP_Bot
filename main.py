@@ -606,7 +606,7 @@ async def pridej_zbran(interaction: discord.Interaction,
             data["zbrane"][zbran] += pocet
         else:
             data["zbrane"][zbran] = pocet
-        save_data()
+        
         await interaction.response.send_message(
             f"✅ Přidáno {pocet}x `{zbran}` hráči {uzivatel.display_name}.")
 
@@ -639,7 +639,7 @@ async def odeber_zbran(interaction: discord.Interaction,
             data["zbrane"][zbran] -= pocet
             if data["zbrane"][zbran] <= 0:
                 del data["zbrane"][zbran]
-            save_data()
+            
             await interaction.response.send_message(
                 f"✅ Odebráno {pocet}x `{zbran}` hráči {uzivatel.display_name}."
             )
@@ -683,7 +683,7 @@ async def pridej_auto(interaction: discord.Interaction,
             data["auta"][auto] += pocet
         else:
             data["auta"][auto] = pocet
-        save_data()
+        
         await interaction.response.send_message(
             f"✅ Přidáno {pocet}x `{auto}` hráči {uzivatel.display_name}.")
 
@@ -714,7 +714,7 @@ async def odeber_auto(interaction: discord.Interaction,
             data["auta"][auto] -= pocet
             if data["auta"][auto] <= 0:
                 del data["auta"][auto]
-            save_data()
+            
             await interaction.response.send_message(
                 f"✅ Odebráno {pocet}x `{auto}` hráči {uzivatel.display_name}.")
         else:
@@ -777,7 +777,7 @@ async def reset_inventory(interaction: discord.Interaction, uzivatel: discord.Me
         data["zbrane"] = {}
         data["veci"] = {}
         data["drogy"] = {}
-        save_data()
+        
         await interaction.response.send_message(f"♻️ Inventář hráče {uzivatel.display_name} byl úspěšně resetován.")
 
 
@@ -817,7 +817,7 @@ async def pridej_penize(interaction: discord.Interaction, uzivatel: discord.Memb
     data = get_or_create_user(uzivatel.id)
     data["hotovost"] += castka # Automatically adds to hotovost
     data["penize"] = data["hotovost"] + data["bank"]  # Update total money
-    save_data()
+    
     await interaction.response.send_message(f"✅ Přidáno {castka}$ hráči {uzivatel.display_name}.")
 
 # Odeber penize command
@@ -855,7 +855,7 @@ async def odeber_penize(interaction: discord.Interaction, uzivatel: discord.Memb
                 data["bank"] = 0
 
     data["penize"] = data["hotovost"] + data["bank"]
-    save_data()
+    
     await interaction.response.send_message(f"✅ Odebráno {actual_castka}$ hráči {uzivatel.display_name}.")
 
 # Reset penize command
@@ -871,7 +871,7 @@ async def reset_penize(interaction: discord.Interaction, uzivatel: discord.Membe
         data["hotovost"] = 0
         data["bank"] = 0
         data["penize"] = 0
-        save_data()
+        
         await interaction.response.send_message(f"♻️ Peníze hráče {uzivatel.display_name} byly vynulovány.")
 
 # Pay command
@@ -906,7 +906,7 @@ async def posli_penize(interaction: discord.Interaction, cil: discord.Member, ca
     odesilatel_data["penize"] = odesilatel_data["hotovost"] + odesilatel_data["bank"]
     prijemce_data["penize"] = prijemce_data["hotovost"] + prijemce_data["bank"]
 
-    save_data()
+    
     await interaction.response.send_message(f"💸 Poslal jsi {castka}$ hráči {cil.display_name}.")
 # Kup auto command
 
@@ -956,7 +956,7 @@ async def koupit_auto(interaction: discord.Interaction, auto: str):
 
     # Update total money
     data["penize"] = data["hotovost"] + data["bank"]
-    save_data()
+    
 
     await interaction.response.send_message(
         f"✅ Úspěšně jsi koupil **{auto}** za **{cena:,} $**."
@@ -1013,7 +1013,7 @@ async def koupit_zbran(interaction: discord.Interaction, zbran: str, pocet: int 
     else:
         data["zbrane"][zbran] = pocet
 
-    save_data()
+    
     await interaction.response.send_message(f"✅ Koupil jsi {pocet}x `{zbran}` za {celkova_cena:,}$. Zůstatek: {data['penize']:,}$.")
 
 @koupit_zbran.autocomplete("zbran")
@@ -1075,7 +1075,7 @@ async def prodej_auto(interaction: discord.Interaction, kupec: discord.Member, a
         kupec_data["penize"] = kupec_data["hotovost"] + kupec_data["bank"]
         prodavajici_data["penize"] = prodavajici_data["hotovost"] + prodavajici_data["bank"]
 
-        save_data()
+        
 
         success_embed = discord.Embed(
             title="✅ Obchod dokončen!",
@@ -1152,7 +1152,7 @@ async def prodej_zbran(interaction: discord.Interaction, kupec: discord.Member, 
         kupec_data["penize"] = kupec_data["hotovost"] + kupec_data["bank"]
         prodavajici_data["penize"] = prodavajici_data["hotovost"] + prodavajici_data["bank"]
 
-        save_data()
+        
 
         success_embed = discord.Embed(
             title="✅ Obchod dokončen!",
@@ -1204,7 +1204,7 @@ async def vybrat(interaction: discord.Interaction, castka: str):
         data["hotovost"] += actual_castka
 
         data["penize"] = data["hotovost"] + data["bank"]
-        save_data()
+        
         await interaction.response.send_message(f"✅ Vybral jsi {actual_castka:,}$ z banky.")
 
 
@@ -1238,13 +1238,13 @@ async def vlozit(interaction: discord.Interaction, castka: str):
         data["bank"] += actual_castka
 
     data["penize"] = data["hotovost"] + data["bank"]
-    save_data()
+    
 
     await interaction.response.send_message(f"✅ Vložil jsi {actual_castka:,} $ z peněženky do banky.")
 
 @tree.command(name="collect", description="Vybereš si týdenní výplatu podle svých rolí (každá má vlastní cooldown).")
 async def collect(interaction: discord.Interaction):
-    now = datetime.datetime.utcnow()
+    now = datetime.utcnow()
     data = get_or_create_user(interaction.user.id)
 
     if "collect_timestamps" not in data:
@@ -1262,10 +1262,10 @@ async def collect(interaction: discord.Interaction):
 
         posledni = data["collect_timestamps"].get(str(role_id))
         if posledni:
-            posledni_cas = datetime.datetime.fromisoformat(posledni)
+            posledni_cas = datetime.fromisoformat(posledni)
             rozdil = now - posledni_cas
-            if rozdil < datetime.timedelta(days=7):
-                zbývá = datetime.timedelta(days=7) - rozdil
+            if rozdil < timedelta(days=7):
+                zbývá = timedelta(days=7) - rozdil
                 hodiny, zbytek = divmod(zbývá.total_seconds(), 3600)
                 minuty = int((zbytek % 3600) // 60)
                 cekajici_role.append((role_id, hodiny, minuty))
@@ -1276,7 +1276,7 @@ async def collect(interaction: discord.Interaction):
         data["collect_timestamps"][str(role_id)] = now.isoformat()
 
     data["hotovost"] = data.get("hotovost", 0) + vyplaceno
-    save_data()
+    
 
     embed = discord.Embed(
         title="💰 Týdenní výplata",
@@ -1305,25 +1305,25 @@ async def collect(interaction: discord.Interaction):
 @tree.command(name="leaderboard", description="Zobrazí žebříček nejbohatších hráčů")
 @app_commands.describe(stranka="Číslo stránky leaderboardu")
 async def leaderboard(interaction: discord.Interaction, stranka: int = 1):
-    with open("data.json", "r") as f:
-        db = json.load(f)
+    all_users = list(hraci.find())
 
-    if not db:
+    if not all_users:
         await interaction.response.send_message("❌ Žádná data k zobrazení.", ephemeral=True)
         return
 
-    leaderboard = []
-    for user_id, data in db.items():
-        total = data.get("hotovost", 0) + data.get("bank", 0)
-        leaderboard.append((int(user_id), total))
+    leaderboard_data = []
+    for user in all_users:
+        user_id = int(user["_id"])
+        total = user.get("hotovost", 0) + user.get("bank", 0)
+        leaderboard_data.append((user_id, total))
 
-    leaderboard.sort(key=lambda x: x[1], reverse=True)
+    leaderboard_data.sort(key=lambda x: x[1], reverse=True)
 
     stranka -= 1
     zaznamu_na_stranku = 10
     zacatek = stranka * zaznamu_na_stranku
     konec = zacatek + zaznamu_na_stranku
-    strankovany = leaderboard[zacatek:konec]
+    strankovany = leaderboard_data[zacatek:konec]
 
     if not strankovany:
         await interaction.response.send_message("❌ Tato stránka neexistuje.", ephemeral=True)
@@ -1331,7 +1331,7 @@ async def leaderboard(interaction: discord.Interaction, stranka: int = 1):
 
     embed = discord.Embed(
         title="💰 Leaderboard – Nejbohatší hráči",
-        description=f"Stránka {stranka + 1}/{(len(leaderboard) + 9) // 10}",
+        description=f"Stránka {stranka + 1}/{(len(leaderboard_data) + 9) // 10}",
         color=discord.Color.gold()
     )
 
@@ -1445,7 +1445,7 @@ async def prodej_veci(interaction: discord.Interaction, cil: discord.Member, vec
     data_prodejce["penize"] = data_prodejce["hotovost"] + data_prodejce["bank"]
     data_kupce["penize"] = data_kupce["hotovost"] + data_kupce["bank"]
 
-    save_data()
+    
 
     await interaction.edit_original_response(
         content=f"✅ {cil.mention} koupil {mnozstvi}x `{vec}` za {cena:,}$ od {prodavajici.mention}.",
@@ -1478,7 +1478,7 @@ async def kup_veci(interaction: discord.Interaction, veci: str, pocet: int = 1):
     else:
         data["veci"][veci] = pocet
 
-    save_data()
+    
     await interaction.response.send_message(f"✅ Koupil jsi {pocet}x `{veci}` za {cena:,}$.")
 
     await log_action(bot, interaction.guild, f"{user.mention} koupil {pocet}x {veci} za {cena:,}$")
@@ -1497,10 +1497,10 @@ async def vyrob(interaction: discord.Interaction, droga: str, mnozstvi: int = 10
     if not recept:
         return await interaction.response.send_message("❌ Tato droga neexistuje.", ephemeral=True)
 
-    nyni = datetime.datetime.utcnow()
+    nyni = datetime.utcnow()
     posledni = data.get("last_vyroba")
     if posledni:
-        rozdil = (nyni - datetime.datetime.fromisoformat(posledni)).total_seconds()
+        rozdil = (nyni - datetime.fromisoformat(posledni)).total_seconds()
         if rozdil < VYROBA_COOLDOWN * 60:
             zbyva = int((VYROBA_COOLDOWN * 60 - rozdil) / 60)
             return await interaction.response.send_message(f"⏳ Musíš počkat {zbyva} minut před další výrobou.", ephemeral=True)
@@ -1528,7 +1528,7 @@ async def vyrob(interaction: discord.Interaction, droga: str, mnozstvi: int = 10
 
     data["last_vyroba"] = nyni.isoformat()
     celkovy_cas = recept["cas"] * davky
-    save_data()
+    
 
     await interaction.response.send_message(
         f"🧪 Začal jsi vyrábět {mnozstvi}g `{droga}`.\n⏳ Dokončení za {celkovy_cas} minut...", ephemeral=True)
@@ -1544,7 +1544,7 @@ async def vyrob(interaction: discord.Interaction, droga: str, mnozstvi: int = 10
                     veci[nastroj] -= pocet
                     if veci[nastroj] <= 0:
                         veci.pop(nastroj)
-            save_data()
+            
             try:
                 await uzivatel.send(f"❌ Výroba {mnozstvi}g `{droga}` selhala. Přišel jsi o suroviny i nástroje.")
             except:
@@ -1554,7 +1554,7 @@ async def vyrob(interaction: discord.Interaction, droga: str, mnozstvi: int = 10
         # Výroba úspěšná
         drogy[droga] = drogy.get(droga, 0) + mnozstvi
         data["drogy"] = drogy
-        save_data()
+        
         try:
             await uzivatel.send(f"✅ Výroba dokončena: {mnozstvi}g `{droga}` bylo přidáno do inventáře.")
         except:
@@ -1694,7 +1694,7 @@ async def pozij_drogu(interaction: discord.Interaction, droga: str, mnozstvi: st
     if drogy[droga] <= 0:
         del drogy[droga]
     data["drogy"] = drogy
-    save_data()
+    
 
     # Embed
     embed = discord.Embed(
@@ -1758,7 +1758,7 @@ async def pridej_veci(interaction: discord.Interaction, uzivatel: discord.Member
     veci = data.get("veci", {})
     veci[vec] = veci.get(vec, 0) + mnozstvi
     data["veci"] = veci
-    save_data()
+    
 
     await interaction.response.send_message(f"✅ Přidáno {mnozstvi}× `{vec}` uživateli {uzivatel.display_name}.", ephemeral=True)
 
@@ -1775,7 +1775,7 @@ async def pridej_drogy(interaction: discord.Interaction, uzivatel: discord.Membe
     drogy = data.get("drogy", {})
     drogy[droga] = drogy.get(droga, 0) + mnozstvi
     data["drogy"] = drogy
-    save_data()
+    
 
     await interaction.response.send_message(f"✅ Přidáno {mnozstvi}g `{droga}` uživateli {uzivatel.display_name}.", ephemeral=True)
 
@@ -1845,7 +1845,7 @@ async def odeber_veci(interaction: discord.Interaction, uzivatel: discord.Member
     if veci[vec] <= 0:
         del veci[vec]
     data["veci"] = veci
-    save_data()
+    
 
     await interaction.response.send_message(f"✅ Odebráno {mnozstvi}× `{vec}` uživateli {uzivatel.display_name}.", ephemeral=True)
 
@@ -1868,7 +1868,7 @@ async def odeber_drogy(interaction: discord.Interaction, uzivatel: discord.Membe
     if drogy[droga] <= 0:
         del drogy[droga]
     data["drogy"] = drogy
-    save_data()
+    
 
     await interaction.response.send_message(f"✅ Odebráno {mnozstvi}g `{droga}` uživateli {uzivatel.display_name}.", ephemeral=True)
 
