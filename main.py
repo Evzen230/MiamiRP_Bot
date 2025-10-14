@@ -1585,6 +1585,55 @@ async def odeber_drogy(interaction: discord.Interaction, uzivatel: discord.Membe
     await interaction.response.send_message(f"✅ Odebráno {mnozstvi}g `{droga}` uživateli {uzivatel.display_name}.", ephemeral=True)
     await log_action(bot, interaction.guild, f"{interaction.user.mention} odebral {mnozstvi}g {droga} hráči {uzivatel.mention}")
 
+@tree.command(name="car-info", description="Zobrazí detailní informace o autě")
+@app_commands.describe(auto="Auto, o kterém chceš získat informace")
+@app_commands.autocomplete(auto=autocomplete_kup_auto)
+async def car_info(interaction: discord.Interaction, auto: str):
+    if auto not in AUTA:
+        await interaction.response.send_message("❌ Takové auto neexistuje.", ephemeral=True)
+        return
+
+    info = AUTA[auto]
+    cena = info.get("cena", 0)
+    top_speed = info.get("top_speed", "N/A")
+    car_class = info.get("class", "N/A")
+    car_type = info.get("type", "N/A")
+    fuel = info.get("fuel", "N/A")
+    pozadovana_role = info.get("role")
+
+    # Role requirement text
+    if pozadovana_role:
+        role_text = "🔒 Vyžaduje specifickou roli (FHP/MPD/FBI/MFD/EMS/FDOT)"
+    else:
+        role_text = "✅ Dostupné pro všechny"
+
+    # Price text
+    if cena == 0:
+        price_text = "ZDARMA (pro oprávněné role)"
+    else:
+        price_text = f"{cena:,} $"
+
+    # Fuel emoji
+    fuel_emoji = {
+        "Petrol": "⛽",
+        "Diesel": "🛢️",
+        "Electric": "🔋",
+        "Hybrid": "🔋⛽"
+    }.get(fuel, "⚙️")
+
+    embed = discord.Embed(
+        title=f"🚗 {auto}",
+        color=discord.Color.blue()
+    )
+    embed.add_field(name="💰 Cena", value=price_text, inline=True)
+    embed.add_field(name="🏁 Maximální rychlost", value=f"{top_speed} km/h" if top_speed != "N/A" else "N/A", inline=True)
+    embed.add_field(name="📊 Třída", value=car_class, inline=True)
+    embed.add_field(name="🚙 Typ vozidla", value=car_type, inline=True)
+    embed.add_field(name=f"{fuel_emoji} Palivo", value=fuel, inline=True)
+    embed.add_field(name="🔐 Dostupnost", value=role_text, inline=True)
+
+    await interaction.response.send_message(embed=embed)
+
 @tree.command(name="prikazy", description="Zobrazí seznam všech dostupných příkazů a jejich popis")
 async def prikazy(interaction: discord.Interaction):
     embed = discord.Embed(title="📜 Seznam příkazů", color=discord.Color.green())
@@ -1594,6 +1643,7 @@ async def prikazy(interaction: discord.Interaction):
     embed.add_field(name="/prodej-zbran [uživatel] [zbraň] [cena]", value="Prodáš zbraň jinému hráči, s potvrzením od kupujícího.", inline=False)
     embed.add_field(name="/koupit-auto [auto]", value="Koupíš auto z nabídky.", inline=False)
     embed.add_field(name="/prodej-auto [uživatel] [auto] [cena]", value="Prodáš auto jinému hráči, s potvrzením od kupujícího.", inline=False)
+    embed.add_field(name="/car-info [auto]", value="Zobrazí detailní informace o autě (rychlost, třída, palivo, atd.).", inline=False)
     embed.add_field(name="/kup-veci [věc] [počet]", value="Koupíš věci potřebné pro výrobu nelegálních látek.", inline=False)
     embed.add_field(name="/prodej-veci [uživatel] [věc] [počet] [cena]", value="Prodáš věci jinému hráči za určenou cenu.", inline=False)
     embed.add_field(name="/vyrob [droga] [gramy]", value="Vyrobíš nelegální látku (vyžaduje nástroje a suroviny).", inline=False)
