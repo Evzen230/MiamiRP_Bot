@@ -4,8 +4,8 @@ import json
 import os
 from discord.ext import commands
 import asyncio
-from keep_alive import keep_alive 
-import random
+from keep_alive import keep_alive
+from random import random
 from operator import itemgetter
 from discord.ui import View, Button
 from pymongo import MongoClient
@@ -72,15 +72,15 @@ DOSTUPNA_AUTA = [
     "Falcon Heritage 2021", "Ferdinand Jalapeno Turbo 2022",
     "Falcon Traveller 2022", "Chevlon Corbeta TZ 2014",
     "Chevlon Corbeta 8 2023", "Falcon Advance Bolt 2024", "Averon Anodic 2024",
-    "Celestial Truckatron 2024", "BKM Risen Roadster 2020","Falcon Prime Eques 2003", 
+    "Celestial Truckatron 2024", "BKM Risen Roadster 2020","Falcon Prime Eques 2003",
     "Chevlon Captain PPV 2006", "Bullhorn Pueblo Pursuit 2018", "Chevlon Amigo LZR 2011",
-    "Falcon Interceptor Sedan 2017", "Bullhorn Prancer Pursuit 2011", "Falcon Stallion 350 2015", 
-    "Bullhorn Prancer Pursuit 2015", "Bullhorn Prancer Pursuit Widebody 2020", "Chevlon Corbeta TZ 2014", 
-    "Bullhorn Determinator SFP Fury 2022", "Chevlon Camion PPV 2008", "Chevlon Camion PPV 2018", "Chevlon Camion PPV 2021", 
-    "BKM Munich 2020", "Falcon Rampage PPV 2021", "Falcon Traveller SSV 2022", "Falcon Interceptor Utility 2013", "Falcon Interceptor Utility 2019", 
+    "Falcon Interceptor Sedan 2017", "Bullhorn Prancer Pursuit 2011", "Falcon Stallion 350 2015",
+    "Bullhorn Prancer Pursuit 2015", "Bullhorn Prancer Pursuit Widebody 2020", "Chevlon Corbeta TZ 2014",
+    "Bullhorn Determinator SFP Fury 2022", "Chevlon Camion PPV 2008", "Chevlon Camion PPV 2018", "Chevlon Camion PPV 2021",
+    "BKM Munich 2020", "Falcon Rampage PPV 2021", "Falcon Traveller SSV 2022", "Falcon Interceptor Utility 2013", "Falcon Interceptor Utility 2019",
     "Falcon Interceptor Utility 2020", "Averon Q8 2022", "Falcon Advance SSV 2018", "Bullhorn BH15 SSV 2009", "Falcon Advance Bolt 2024",
-    "Chevlon Platoro PPV 2019", "4-Wheeler", "Canyon Descender LEO", "Chevlon Commuter Van 2006", "Mobile Command 2005", "Prisoner Transport", 
-    "Emergency Services Falcon Advance+ 2020", "SWAT Truck 2011", "Fire Engine", "Heavy Tanker", "Ladder Truck", "Heavy Rescue", "Special Operations Unit", 
+    "Chevlon Platoro PPV 2019", "4-Wheeler", "Canyon Descender LEO", "Chevlon Commuter Van 2006", "Mobile Command 2005", "Prisoner Transport",
+    "Emergency Services Falcon Advance+ 2020", "SWAT Truck 2011", "Fire Engine", "Heavy Tanker", "Ladder Truck", "Heavy Rescue", "Special Operations Unit",
     "Bullhorn Ambulance", "International Ambulance", "Medical Bus", "Canyon Descender", "4 Wheeler", "Paramedic SUV", "FD Chevlon Camion 2018", "Utility Falcon Advance+",
     "Squad Falcon Advance+ 2020", "Brush Falcon Advance+ 2020", "Falcon Advance", "FD Bullhorn Prancer", "Mobile Command Center", "Vellfire Evertt Crew Cab 1995",
     "Flatbed Tow Truck", "Cone Truck", "Falcon Advance+ Tow Truck 2020", "Falcon Advance+ Roadside Assist 2020", "Chevlon Platoro Utility", "Bucket Truck",
@@ -245,27 +245,27 @@ AUTA = {
 #Ceník zbraní
 CENY_ZBRANI = {
     # Zbraně typu A:
-    "Beretta M9": 700, 
-    "Desert Eagle": 900, 
-    "Colt M1911": 750, 
+    "Beretta M9": 700,
+    "Desert Eagle": 900,
+    "Colt M1911": 750,
     "Colt Python": 1000,
     "Lemat Revolver": 1200,
 
     # Zbraně typu B:
     "TEC-9": 1000,
     "Skorpion": 1100,
-    "Kriss Vector": 1500, 
+    "Kriss Vector": 1500,
 
     #Zbraně typu C:
     "M14": 2000,
-    "AK47": 2500, 
-    "PPSH 41": 2300, 
-    "LMT L129A1": 2600, 
-    "Remington 870": 2000, 
+    "AK47": 2500,
+    "PPSH 41": 2300,
+    "LMT L129A1": 2600,
+    "Remington 870": 2000,
 
     #Zbraně typu D:
-    "Remington MSR": 15000, 
-    "M249":  12000 
+    "Remington MSR": 15000,
+    "M249":  12000
 }
 #Zbraně na přidávání
 DOSTUPNE_ZBRANE = [
@@ -400,7 +400,7 @@ def encode_mongo_uri(uri):
         # Pattern to extract mongodb://username:password@host or mongodb+srv://username:password@host
         pattern = r'^(mongodb(?:\+srv)?://)([^:]+):([^@]+)@(.+)$'
         match = re.match(pattern, uri)
-        
+
         if match:
             protocol, username, password, rest = match.groups()
             # URL encode username and password
@@ -445,7 +445,8 @@ def get_or_create_user(user_id):
             "bank": 0,
             "last_collect": None,
             "collect_timestamps": {},
-            "veci": {}
+            "veci": {},
+            "drogy": {} # Inicializace drog
         }
         hraci.insert_one(new_user)
         return new_user
@@ -461,7 +462,8 @@ def get_or_create_user(user_id):
         "bank": 0,
         "veci": {},
         "collect_timestamps": {},
-        "last_collect": None
+        "last_collect": None,
+        "drogy": {} # Doplnění drog
     }.items():
         if key not in user:
             update_fields[key] = default
@@ -606,7 +608,8 @@ async def pridej_zbran(interaction: discord.Interaction,
             data["zbrane"][zbran] += pocet
         else:
             data["zbrane"][zbran] = pocet
-        
+        hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
+
         await interaction.response.send_message(
             f"✅ Přidáno {pocet}x `{zbran}` hráči {uzivatel.display_name}.")
 
@@ -639,7 +642,8 @@ async def odeber_zbran(interaction: discord.Interaction,
             data["zbrane"][zbran] -= pocet
             if data["zbrane"][zbran] <= 0:
                 del data["zbrane"][zbran]
-            
+            hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
+
             await interaction.response.send_message(
                 f"✅ Odebráno {pocet}x `{zbran}` hráči {uzivatel.display_name}."
             )
@@ -683,7 +687,8 @@ async def pridej_auto(interaction: discord.Interaction,
             data["auta"][auto] += pocet
         else:
             data["auta"][auto] = pocet
-        
+        hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
+
         await interaction.response.send_message(
             f"✅ Přidáno {pocet}x `{auto}` hráči {uzivatel.display_name}.")
 
@@ -714,7 +719,8 @@ async def odeber_auto(interaction: discord.Interaction,
             data["auta"][auto] -= pocet
             if data["auta"][auto] <= 0:
                 del data["auta"][auto]
-            
+            hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
+
             await interaction.response.send_message(
                 f"✅ Odebráno {pocet}x `{auto}` hráči {uzivatel.display_name}.")
         else:
@@ -748,7 +754,7 @@ async def inventory(interaction: discord.Interaction, uzivatel: discord.Member =
         auta_text = "\n".join(f"🚗 {auto} ×{pocet}" for auto, pocet in auta.items()) or "Žádná"
         zbrane_text = "\n".join(f"🔫 {zbran} ×{pocet}" for zbran, pocet in zbrane.items()) or "Žádné"
         veci_text = "\n".join(f"📦 {nazev} ×{pocet}" for nazev, pocet in veci.items()) or "Žádné"
-        drogy_text = "\n".join(f"💊 {nazev} ×{gramy}g" for nazev, gramy in drogy.items())
+        drogy_text = "\n".join(f"💊 {nazev} ×{gramy:.2f}g" for nazev, gramy in drogy.items()) # Formátování na 2 desetinná místa
 
         embed = discord.Embed(
             title=f"📋 Inventář uživatele {uzivatel.display_name}",
@@ -777,7 +783,8 @@ async def reset_inventory(interaction: discord.Interaction, uzivatel: discord.Me
         data["zbrane"] = {}
         data["veci"] = {}
         data["drogy"] = {}
-        
+        hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
+
         await interaction.response.send_message(f"♻️ Inventář hráče {uzivatel.display_name} byl úspěšně resetován.")
 
 
@@ -817,7 +824,8 @@ async def pridej_penize(interaction: discord.Interaction, uzivatel: discord.Memb
     data = get_or_create_user(uzivatel.id)
     data["hotovost"] += castka # Automatically adds to hotovost
     data["penize"] = data["hotovost"] + data["bank"]  # Update total money
-    
+    hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
+
     await interaction.response.send_message(f"✅ Přidáno {castka}$ hráči {uzivatel.display_name}.")
 
 # Odeber penize command
@@ -855,7 +863,8 @@ async def odeber_penize(interaction: discord.Interaction, uzivatel: discord.Memb
                 data["bank"] = 0
 
     data["penize"] = data["hotovost"] + data["bank"]
-    
+    hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
+
     await interaction.response.send_message(f"✅ Odebráno {actual_castka}$ hráči {uzivatel.display_name}.")
 
 # Reset penize command
@@ -871,7 +880,8 @@ async def reset_penize(interaction: discord.Interaction, uzivatel: discord.Membe
         data["hotovost"] = 0
         data["bank"] = 0
         data["penize"] = 0
-        
+        hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
+
         await interaction.response.send_message(f"♻️ Peníze hráče {uzivatel.display_name} byly vynulovány.")
 
 # Pay command
@@ -906,7 +916,9 @@ async def posli_penize(interaction: discord.Interaction, cil: discord.Member, ca
     odesilatel_data["penize"] = odesilatel_data["hotovost"] + odesilatel_data["bank"]
     prijemce_data["penize"] = prijemce_data["hotovost"] + prijemce_data["bank"]
 
-    
+    hraci.update_one({"_id": str(interaction.user.id)}, {"$set": odesilatel_data})
+    hraci.update_one({"_id": str(cil.id)}, {"$set": prijemce_data})
+
     await interaction.response.send_message(f"💸 Poslal jsi {castka}$ hráči {cil.display_name}.")
 # Kup auto command
 
@@ -928,7 +940,7 @@ async def koupit_auto(interaction: discord.Interaction, auto: str):
     if pozadovana_role:
         required_role_ids = [int(role_id.strip()) for role_id in pozadovana_role.split("||")]
         user_role_ids = [role.id for role in user.roles]
-        
+
         if not any(role_id in user_role_ids for role_id in required_role_ids):
             await interaction.response.send_message(
                 f"❌ Toto auto vyžaduje specifickou roli.", ephemeral=True)
@@ -956,7 +968,8 @@ async def koupit_auto(interaction: discord.Interaction, auto: str):
 
     # Update total money
     data["penize"] = data["hotovost"] + data["bank"]
-    
+    hraci.update_one({"_id": str(user.id)}, {"$set": data})
+
 
     await interaction.response.send_message(
         f"✅ Úspěšně jsi koupil **{auto}** za **{cena:,} $**."
@@ -1012,8 +1025,9 @@ async def koupit_zbran(interaction: discord.Interaction, zbran: str, pocet: int 
         data["zbrane"][zbran] += pocet
     else:
         data["zbrane"][zbran] = pocet
+    hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
 
-    
+
     await interaction.response.send_message(f"✅ Koupil jsi {pocet}x `{zbran}` za {celkova_cena:,}$. Zůstatek: {data['penize']:,}$.")
 
 @koupit_zbran.autocomplete("zbran")
@@ -1075,7 +1089,9 @@ async def prodej_auto(interaction: discord.Interaction, kupec: discord.Member, a
         kupec_data["penize"] = kupec_data["hotovost"] + kupec_data["bank"]
         prodavajici_data["penize"] = prodavajici_data["hotovost"] + prodavajici_data["bank"]
 
-        
+        # Save to database
+        hraci.update_one({"_id": str(kupec.id)}, {"$set": kupec_data})
+        hraci.update_one({"_id": str(interaction.user.id)}, {"$set": prodavajici_data})
 
         success_embed = discord.Embed(
             title="✅ Obchod dokončen!",
@@ -1152,7 +1168,10 @@ async def prodej_zbran(interaction: discord.Interaction, kupec: discord.Member, 
         kupec_data["penize"] = kupec_data["hotovost"] + kupec_data["bank"]
         prodavajici_data["penize"] = prodavajici_data["hotovost"] + prodavajici_data["bank"]
 
-        
+        # Save to database
+        hraci.update_one({"_id": str(kupec.id)}, {"$set": kupec_data})
+        hraci.update_one({"_id": str(interaction.user.id)}, {"$set": prodavajici_data})
+
 
         success_embed = discord.Embed(
             title="✅ Obchod dokončen!",
@@ -1203,9 +1222,11 @@ async def vybrat(interaction: discord.Interaction, castka: str):
         data["bank"] -= actual_castka
         data["hotovost"] += actual_castka
 
-        data["penize"] = data["hotovost"] + data["bank"]
-        
-        await interaction.response.send_message(f"✅ Vybral jsi {actual_castka:,}$ z banky.")
+    data["penize"] = data["hotovost"] + data["bank"]
+    hraci.update_one({"_id": str(interaction.user.id)}, {"$set": data})
+
+
+    await interaction.response.send_message(f"✅ Vybral jsi {actual_castka:,}$ z banky.")
 
 
 @tree.command(name="vlozit", description="Vloží peníze z peněženky do banky")
@@ -1238,7 +1259,8 @@ async def vlozit(interaction: discord.Interaction, castka: str):
         data["bank"] += actual_castka
 
     data["penize"] = data["hotovost"] + data["bank"]
-    
+    hraci.update_one({"_id": str(interaction.user.id)}, {"$set": data})
+
 
     await interaction.response.send_message(f"✅ Vložil jsi {actual_castka:,} $ z peněženky do banky.")
 
@@ -1276,7 +1298,9 @@ async def collect(interaction: discord.Interaction):
         data["collect_timestamps"][str(role_id)] = now.isoformat()
 
     data["hotovost"] = data.get("hotovost", 0) + vyplaceno
-    
+    data["penize"] = data["hotovost"] + data.get("bank", 0) # Aktualizace celkových peněz
+    hraci.update_one({"_id": str(interaction.user.id)}, {"$set": data})
+
 
     embed = discord.Embed(
         title="💰 Týdenní výplata",
@@ -1296,10 +1320,13 @@ async def collect(interaction: discord.Interaction):
             role_obj = discord.utils.get(interaction.guild.roles, id=role_id)
             nazev = role_obj.name if role_obj else f"Role ID {role_id}"
             cekani += f"⏳ **{nazev}** – za {int(h)}h {int(m)}m\n"
-        embed.add_field(name="🕒 Nelze vybrat (ještě cooldown)", value=cekani, inline=False)
+        embed.add_field(name="<!--- Timer --->", value=cekani, inline=False)
 
-    if not vyplacene_role:
-        embed.description = "❌ Tento týden už sis vybral odměnu za všechny své role."
+    if not vyplacene_role and not cekajici_role:
+        embed.description = "ℹ️ Nemáš žádné role s týdenní výplatou."
+    elif not vyplacene_role and cekajici_role:
+         embed.description = "❌ Tento týden sis už vybral odměnu za všechny své role."
+
 
     await interaction.response.send_message(embed=embed, ephemeral=True)
 @tree.command(name="leaderboard", description="Zobrazí žebříček nejbohatších hráčů")
@@ -1445,7 +1472,9 @@ async def prodej_veci(interaction: discord.Interaction, cil: discord.Member, vec
     data_prodejce["penize"] = data_prodejce["hotovost"] + data_prodejce["bank"]
     data_kupce["penize"] = data_kupce["hotovost"] + data_kupce["bank"]
 
-    
+    hraci.update_one({"_id": str(prodavajici.id)}, {"$set": data_prodejce})
+    hraci.update_one({"_id": str(cil.id)}, {"$set": data_kupce})
+
 
     await interaction.edit_original_response(
         content=f"✅ {cil.mention} koupil {mnozstvi}x `{vec}` za {cena:,}$ od {prodavajici.mention}.",
@@ -1477,8 +1506,9 @@ async def kup_veci(interaction: discord.Interaction, veci: str, pocet: int = 1):
         data["veci"][veci] += pocet
     else:
         data["veci"][veci] = pocet
+    hraci.update_one({"_id": str(user.id)}, {"$set": data})
 
-    
+
     await interaction.response.send_message(f"✅ Koupil jsi {pocet}x `{veci}` za {cena:,}$.")
 
     await log_action(bot, interaction.guild, f"{user.mention} koupil {pocet}x {veci} za {cena:,}$")
@@ -1528,7 +1558,7 @@ async def vyrob(interaction: discord.Interaction, droga: str, mnozstvi: int = 10
 
     data["last_vyroba"] = nyni.isoformat()
     celkovy_cas = recept["cas"] * davky
-    
+
 
     await interaction.response.send_message(
         f"🧪 Začal jsi vyrábět {mnozstvi}g `{droga}`.\n⏳ Dokončení za {celkovy_cas} minut...", ephemeral=True)
@@ -1538,13 +1568,13 @@ async def vyrob(interaction: discord.Interaction, droga: str, mnozstvi: int = 10
         await asyncio.sleep(celkovy_cas * 60)
 
         # Šance na selhání
-        if random.random() < recept["selhani"]:
+        if random() < recept["selhani"]:
             for nastroj, pocet in recept["nastroje"].items():
                 if nastroj in veci:
                     veci[nastroj] -= pocet
                     if veci[nastroj] <= 0:
                         veci.pop(nastroj)
-            
+
             try:
                 await uzivatel.send(f"❌ Výroba {mnozstvi}g `{droga}` selhala. Přišel jsi o suroviny i nástroje.")
             except:
@@ -1554,7 +1584,8 @@ async def vyrob(interaction: discord.Interaction, droga: str, mnozstvi: int = 10
         # Výroba úspěšná
         drogy[droga] = drogy.get(droga, 0) + mnozstvi
         data["drogy"] = drogy
-        
+        hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
+
         try:
             await uzivatel.send(f"✅ Výroba dokončena: {mnozstvi}g `{droga}` bylo přidáno do inventáře.")
         except:
@@ -1615,7 +1646,7 @@ async def pozij_drogu(interaction: discord.Interaction, droga: str, mnozstvi: st
         "Marihuana": {
             "base": "🧘 Uklidnění a zpomalení reakcí",
             "priznaky": [
-                "👁️‍🗨️ Zarudlé oči", 
+                "👁️‍🗨️ Zarudlé oči",
                 "🍔 Zvýšená chuť k jídlu",
                 "😶 Zpomalená řeč"
             ],
@@ -1624,7 +1655,7 @@ async def pozij_drogu(interaction: discord.Interaction, droga: str, mnozstvi: st
         "Kokain": {
             "base": "⚡ Zvýšená energie a euforie",
             "priznaky": [
-                "👃 Časté čichání", 
+                "👃 Časté čichání",
                 "👁️ Rozšířené zornice",
                 "💦 Pocení"
             ],
@@ -1633,7 +1664,7 @@ async def pozij_drogu(interaction: discord.Interaction, droga: str, mnozstvi: st
         "Metamfetamin": {
             "base": "🔥 Extrémní bdělost a hyperaktivita",
             "priznaky": [
-                "💢 Paranoia", 
+                "💢 Paranoia",
                 "👄 Rychlé mluvení",
                 "💦 Pocení"
             ],
@@ -1694,7 +1725,8 @@ async def pozij_drogu(interaction: discord.Interaction, droga: str, mnozstvi: st
     if drogy[droga] <= 0:
         del drogy[droga]
     data["drogy"] = drogy
-    
+    hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
+
 
     # Embed
     embed = discord.Embed(
@@ -1758,12 +1790,13 @@ async def pridej_veci(interaction: discord.Interaction, uzivatel: discord.Member
     veci = data.get("veci", {})
     veci[vec] = veci.get(vec, 0) + mnozstvi
     data["veci"] = veci
-    
+    hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
+
 
     await interaction.response.send_message(f"✅ Přidáno {mnozstvi}× `{vec}` uživateli {uzivatel.display_name}.", ephemeral=True)
 
 
-@tree.command(name="pridej-drogy", description="Přidej drogy do inventáře uživatele (admin)")
+@tree.command(name="pridej-drogy", description="Přidá drogy do inventáře uživatele (admin)")
 @app_commands.describe(uzivatel="Uživatel, kterému přidáš drogy", droga="Název drogy", mnozstvi="Počet gramů")
 @app_commands.autocomplete(droga=autocomplete_drogy)  # Pokud máš autocomplete drog
 async def pridej_drogy(interaction: discord.Interaction, uzivatel: discord.Member, droga: str, mnozstvi: int):
@@ -1775,7 +1808,8 @@ async def pridej_drogy(interaction: discord.Interaction, uzivatel: discord.Membe
     drogy = data.get("drogy", {})
     drogy[droga] = drogy.get(droga, 0) + mnozstvi
     data["drogy"] = drogy
-    
+    hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
+
 
     await interaction.response.send_message(f"✅ Přidáno {mnozstvi}g `{droga}` uživateli {uzivatel.display_name}.", ephemeral=True)
 
@@ -1845,7 +1879,8 @@ async def odeber_veci(interaction: discord.Interaction, uzivatel: discord.Member
     if veci[vec] <= 0:
         del veci[vec]
     data["veci"] = veci
-    
+    hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
+
 
     await interaction.response.send_message(f"✅ Odebráno {mnozstvi}× `{vec}` uživateli {uzivatel.display_name}.", ephemeral=True)
 
@@ -1868,7 +1903,8 @@ async def odeber_drogy(interaction: discord.Interaction, uzivatel: discord.Membe
     if drogy[droga] <= 0:
         del drogy[droga]
     data["drogy"] = drogy
-    
+    hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
+
 
     await interaction.response.send_message(f"✅ Odebráno {mnozstvi}g `{droga}` uživateli {uzivatel.display_name}.", ephemeral=True)
 
@@ -1878,14 +1914,14 @@ async def prikazy(interaction: discord.Interaction):
 
     embed.add_field(name="/inventory [uživatel]", value="Zobrazí inventář hráče (auta, zbraně, věci, drogy).", inline=False)
     embed.add_field(name="/koupit-zbran [zbraň] [počet]", value="Koupíš zbraň z nabídky, pokud máš oprávnění a peníze.", inline=False)
-    embed.add_field(name="/prodej-zbran [uživatel] [zbraň] [počet]", value="Prodáš zbraň jinému hráči, s potvrzením od kupujícího.", inline=False)
+    embed.add_field(name="/prodej-zbran [uživatel] [zbraň] [cena]", value="Prodáš zbraň jinému hráči, s potvrzením od kupujícího.", inline=False)
     embed.add_field(name="/koupit-auto [auto]", value="Koupíš auto z nabídky.", inline=False)
-    embed.add_field(name="/prodej-auto [uživatel] [auto]", value="Prodáš auto jinému hráči, s potvrzením od kupujícího.", inline=False)
+    embed.add_field(name="/prodej-auto [uživatel] [auto] [cena]", value="Prodáš auto jinému hráči, s potvrzením od kupujícího.", inline=False)
     embed.add_field(name="/kup-veci [věc] [počet]", value="Koupíš věci potřebné pro výrobu nelegálních látek.", inline=False)
     embed.add_field(name="/prodej-veci [uživatel] [věc] [počet] [cena]", value="Prodáš věci jinému hráči za určenou cenu.", inline=False)
-    embed.add_field(name="/vytvor [droga] [gramy]", value="Vyrobíš nelegální látku (vyžaduje nástroje a suroviny).", inline=False)
+    embed.add_field(name="/vyrob [droga] [gramy]", value="Vyrobíš nelegální látku (vyžaduje nástroje a suroviny).", inline=False)
     embed.add_field(name="/vyrob [droga] [gramy]", value="Začne výrobu drogy, trvá určitou dobu, může selhat.", inline=False)
-    embed.add_field(name="/pouzit-drogu [droga] [gramy]", value="Použiješ drogu ze svého inventáře, aktivují se efekty.", inline=False)
+    embed.add_field(name="/pozij-drogu [droga] [gramy]", value="Použiješ drogu ze svého inventáře, aktivují se efekty.", inline=False)
     embed.add_field(name="/balance", value="Zobrazí stav peněženky a bankovního účtu.", inline=False)
     embed.add_field(name="/vyber [částka]", value="Vybereš peníze z banky do peněženky.", inline=False)
     embed.add_field(name="/vloz [částka]", value="Vložíš peníze z peněženky na bankovní účet.", inline=False)
