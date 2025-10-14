@@ -1201,15 +1201,30 @@ async def vyrob(interaction: discord.Interaction, droga: str, mnozstvi: int = 10
 
     davky = mnozstvi // 10
 
+    # Zkontroluj všechny chybějící položky najednou
+    chybejici = []
+    
     # Zkontroluj suroviny
     for surovina, pocet in recept["suroviny"].items():
-        if veci.get(surovina, 0) < pocet * davky:
-            return await interaction.response.send_message(f"❌ Nemáš dostatek `{surovina}`.", ephemeral=True)
+        potrebne = pocet * davky
+        mam = veci.get(surovina, 0)
+        if mam < potrebne:
+            chybejici.append(f"🧂 `{surovina}`: chybí {potrebne - mam}× (máš {mam}×, potřebuješ {potrebne}×)")
 
     # Zkontroluj nástroje
     for nastroj, pocet in recept["nastroje"].items():
-        if veci.get(nastroj, 0) < pocet:
-            return await interaction.response.send_message(f"❌ Chybí ti nástroj `{nastroj}`.", ephemeral=True)
+        mam = veci.get(nastroj, 0)
+        if mam < pocet:
+            chybejici.append(f"🛠️ `{nastroj}`: chybí {pocet - mam}× (máš {mam}×, potřebuješ {pocet}×)")
+    
+    # Pokud něco chybí, zobraz všechno najednou
+    if chybejici:
+        embed = discord.Embed(
+            title=f"❌ Chybějící položky pro výrobu {mnozstvi}g `{droga}`",
+            description="\n".join(chybejici),
+            color=discord.Color.red()
+        )
+        return await interaction.response.send_message(embed=embed, ephemeral=True)
 
     # Odečti suroviny
     for surovina, pocet in recept["suroviny"].items():
