@@ -387,7 +387,7 @@ RECEPTY = {
 }
 # === Databáze ===
 
-MONGO_URI = "mongodb+srv://Miami_RP_BOT:XoqLcDEiNJFz99Eb@miamirp.y7b8j.mongodb.net/?retryWrites=true&w=majority&appName=MiamiRP"
+MONGO_URI = os.getenv("MONGO_URI")
 client = MongoClient(MONGO_URI)
 db = client["miamirpbot"]
 hraci = db["hraci"]
