@@ -320,7 +320,7 @@ RECEPTY = {
             "UV Lampa": 1,
             "Sušička": 1
         },
-        "cas": 45,  # minut za 10g
+        "cas": 5,  # minut za 10g
         "selhani": 0
     },
     "Kokain": {
@@ -332,7 +332,7 @@ RECEPTY = {
             "Extraktor": 1,
             "Ochranné rukavice": 1
         },
-        "cas": 60,
+        "cas": 6,
         "selhani": 0.10
     },
     "Metamfetamin": {
@@ -344,7 +344,7 @@ RECEPTY = {
             "Destilační sada": 1,
             "Ochranné rukavice": 1
         },
-        "cas": 70,
+        "cas": 7,
         "selhani": 0.12
     },
     "Pervitin": {
@@ -356,7 +356,7 @@ RECEPTY = {
             "Destilační sada": 1,
             "Ochranné rukavice": 1
         },
-        "cas": 55,
+        "cas": 5,
         "selhani": 0.09
     },
     "Extáze": {
@@ -369,7 +369,7 @@ RECEPTY = {
             "Formička": 1,
             "Ochranné rukavice": 1
         },
-        "cas": 50,
+        "cas": 5,
         "selhani": 0.07
     },
     "Heroin": {
@@ -382,7 +382,7 @@ RECEPTY = {
             "Destilační sada": 1,
             "Ochranná maska": 1
         },
-        "cas": 65,
+        "cas": 6,
         "selhani": 0.11
     }
 }
