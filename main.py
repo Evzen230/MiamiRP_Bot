@@ -33,7 +33,7 @@ tree = bot.tree
 
 # MongoDB connection setup
 MONGO_URI = os.getenv("MONGO_URI")
-    
+
 if not MONGO_URI:
     raise ValueError("MONGO_URI environment variable is not set")
 
@@ -416,8 +416,7 @@ async def inventory(interaction: discord.Interaction, uzivatel: discord.Member =
 @tree.command(name="reset-inventory", description="Resetuje celý inventář hráče (admin)")
 @app_commands.describe(uzivatel="Uživatel, jehož inventář chceš vymazat")
 async def reset_inventory(interaction: discord.Interaction, uzivatel: discord.Member):
-        role_id = 1378111107780313209  # Změň na skutečné ID role
-        if not any(role.id == role_id for role in interaction.user.roles):
+        if not any(role.id == ADMIN_ROLE_ID for role in interaction.user.roles):
             await interaction.response.send_message("❌ Nemáš oprávnění použít tento příkaz.", ephemeral=True)
             return
         data = get_or_create_user(uzivatel.id)
@@ -1454,7 +1453,7 @@ async def pridej_drogy(interaction: discord.Interaction, uzivatel: discord.Membe
     await interaction.response.send_message(f"✅ Přidáno {mnozstvi}g `{droga}` uživateli {uzivatel.display_name}.", ephemeral=True)
 
 def has_permission(user: discord.User):
-    return any(role.id in (ADMIN_ROLE_ID, POLICE_ROLE_ID) for role in user.roles)
+    return any(role.id == ADMIN_ROLE_ID for role in user.roles)
 
 # Autocomplete pro odeber-veci podle inventáře cílového uživatele
 async def autocomplete_odeber_veci(interaction: discord.Interaction, current: str):
