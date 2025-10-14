@@ -235,10 +235,10 @@ async def pridej_zbran(interaction: discord.Interaction,
                            uzivatel: discord.Member,
                            zbran: str,
                            pocet: int = 1):
-        role_id = 1378111107780313209  # Změň na skutečné ID role
-        if not any(role.id == role_id for role in interaction.user.roles):
+        if not any(role.id == ADMIN_ROLE_ID for role in interaction.user.roles):
             await interaction.response.send_message(
                 "❌ Nemáš oprávnění použít tento příkaz.", ephemeral=True)
+            await log_action(bot, interaction.guild, f"❌ {interaction.user.mention} pokusil se použít /pridej-zbran bez oprávnění")
             return
         if zbran not in DOSTUPNE_ZBRANE:
             await interaction.response.send_message(
@@ -254,6 +254,7 @@ async def pridej_zbran(interaction: discord.Interaction,
 
         await interaction.response.send_message(
             f"✅ Přidáno {pocet}x `{zbran}` hráči {uzivatel.display_name}.")
+        await log_action(bot, interaction.guild, f"✅ {interaction.user.mention} přidal {pocet}x {zbran} hráči {uzivatel.mention}")
 
 
 
@@ -274,10 +275,10 @@ async def odeber_zbran(interaction: discord.Interaction,
                            uzivatel: discord.Member,
                            zbran: str,
                            pocet: int = 1):
-        role_id = 1378111107780313209  # Změň na skutečné ID role
-        if not any(role.id == role_id for role in interaction.user.roles):
+        if not any(role.id == ADMIN_ROLE_ID for role in interaction.user.roles):
             await interaction.response.send_message(
                 "❌ Nemáš oprávnění použít tento příkaz.", ephemeral=True)
+            await log_action(bot, interaction.guild, f"❌ {interaction.user.mention} pokusil se použít /odeber-zbran bez oprávnění")
             return
         data = get_or_create_user(uzivatel.id)
         if zbran in data["zbrane"]:
@@ -289,6 +290,7 @@ async def odeber_zbran(interaction: discord.Interaction,
             await interaction.response.send_message(
                 f"✅ Odebráno {pocet}x `{zbran}` hráči {uzivatel.display_name}."
             )
+            await log_action(bot, interaction.guild, f"✅ {interaction.user.mention} odebral {pocet}x {zbran} hráči {uzivatel.mention}")
         else:
             await interaction.response.send_message(
                 f"❌ Zbraň `{zbran}` nebyla nalezena u {uzivatel.display_name}."
@@ -315,10 +317,10 @@ async def pridej_auto(interaction: discord.Interaction,
                           uzivatel: discord.Member,
                           auto: str,
                           pocet: int = 1):
-        role_id = 1378111107780313209  # Změň na skutečné ID role
-        if not any(role.id == role_id for role in interaction.user.roles):
+        if not any(role.id == ADMIN_ROLE_ID for role in interaction.user.roles):
             await interaction.response.send_message(
                 "❌ Nemáš oprávnění použít tento příkaz.", ephemeral=True)
+            await log_action(bot, interaction.guild, f"❌ {interaction.user.mention} pokusil se použít /pridej-auto bez oprávnění")
             return
         if auto not in DOSTUPNA_AUTA:
             await interaction.response.send_message(
@@ -333,6 +335,7 @@ async def pridej_auto(interaction: discord.Interaction,
 
         await interaction.response.send_message(
             f"✅ Přidáno {pocet}x `{auto}` hráči {uzivatel.display_name}.")
+        await log_action(bot, interaction.guild, f"✅ {interaction.user.mention} přidal {pocet}x {auto} hráči {uzivatel.mention}")
 
 @pridej_auto.autocomplete("auto")
 async def autocomplete_auto_pridat(interaction: discord.Interaction,
@@ -351,10 +354,10 @@ async def odeber_auto(interaction: discord.Interaction,
                           uzivatel: discord.Member,
                           auto: str,
                           pocet: int = 1):
-        role_id = 1378111107780313209  # Změň na skutečné ID role
-        if not any(role.id == role_id for role in interaction.user.roles):
+        if not any(role.id == ADMIN_ROLE_ID for role in interaction.user.roles):
             await interaction.response.send_message(
                 "❌ Nemáš oprávnění použít tento příkaz.", ephemeral=True)
+            await log_action(bot, interaction.guild, f"❌ {interaction.user.mention} pokusil se použít /odeber-auto bez oprávnění")
             return
         data = get_or_create_user(uzivatel.id)
         if auto in data["auta"]:
@@ -365,6 +368,7 @@ async def odeber_auto(interaction: discord.Interaction,
 
             await interaction.response.send_message(
                 f"✅ Odebráno {pocet}x `{auto}` hráči {uzivatel.display_name}.")
+            await log_action(bot, interaction.guild, f"✅ {interaction.user.mention} odebral {pocet}x {auto} hráči {uzivatel.mention}")
         else:
             await interaction.response.send_message(
                 f"❌ Auto `{auto}` nebylo nalezeno u {uzivatel.display_name}.")
@@ -458,9 +462,9 @@ async def balance(interaction: discord.Interaction, uzivatel: discord.Member = N
 @tree.command(name="pridej-penize", description="Přidá peníze hráči (admin)")
 @app_commands.describe(uzivatel="Uživatel, kterému chceš přidat peníze", castka="Kolik peněz chceš přidat")
 async def pridej_penize(interaction: discord.Interaction, uzivatel: discord.Member, castka: int):
-    role_id = 1378111107780313209  # Změň na ID role s oprávněním
-    if not any(role.id == role_id for role in interaction.user.roles):
+    if not any(role.id == ADMIN_ROLE_ID for role in interaction.user.roles):
         await interaction.response.send_message("❌ Nemáš oprávnění použít tento příkaz.", ephemeral=True)
+        await log_action(bot, interaction.guild, f"❌ {interaction.user.mention} pokusil se použít /pridej-penize bez oprávnění")
         return
     data = get_or_create_user(uzivatel.id)
     data["hotovost"] += castka # Automatically adds to hotovost
@@ -468,14 +472,15 @@ async def pridej_penize(interaction: discord.Interaction, uzivatel: discord.Memb
     hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
 
     await interaction.response.send_message(f"✅ Přidáno {castka}$ hráči {uzivatel.display_name}.")
+    await log_action(bot, interaction.guild, f"✅ {interaction.user.mention} přidal {castka}$ hráči {uzivatel.mention}")
 
 # Odeber penize command
 @tree.command(name="odeber-penize", description="Odebere peníze hráči (admin)")
 @app_commands.describe(uzivatel="Uživatel, kterému chceš odebrat peníze", castka="Kolik peněz chceš odebrat (nebo 'all' pro všechny)")
 async def odeber_penize(interaction: discord.Interaction, uzivatel: discord.Member, castka: str):
-    role_id = 1378111107780313209  # Změň na ID role s oprávněním
-    if not any(role.id == role_id for role in interaction.user.roles):
+    if not any(role.id == ADMIN_ROLE_ID for role in interaction.user.roles):
         await interaction.response.send_message("❌ Nemáš oprávnění použít tento příkaz.", ephemeral=True)
+        await log_action(bot, interaction.guild, f"❌ {interaction.user.mention} pokusil se použít /odeber-penize bez oprávnění")
         return
     data = get_or_create_user(uzivatel.id)
 
@@ -507,15 +512,16 @@ async def odeber_penize(interaction: discord.Interaction, uzivatel: discord.Memb
     hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
 
     await interaction.response.send_message(f"✅ Odebráno {actual_castka}$ hráči {uzivatel.display_name}.")
+    await log_action(bot, interaction.guild, f"✅ {interaction.user.mention} odebral {actual_castka}$ hráči {uzivatel.mention}")
 
 # Reset penize command
 
 @tree.command(name="reset-penize", description="Resetuje peníze hráče (admin)")
 @app_commands.describe(uzivatel="Uživatel, jehož peníze chceš vynulovat")
 async def reset_penize(interaction: discord.Interaction, uzivatel: discord.Member):
-        role_id = 1378111107780313209  # Změň na ID role s oprávněním
-        if not any(role.id == role_id for role in interaction.user.roles):
+        if not any(role.id == ADMIN_ROLE_ID for role in interaction.user.roles):
             await interaction.response.send_message("❌ Nemáš oprávnění použít tento příkaz.", ephemeral=True)
+            await log_action(bot, interaction.guild, f"❌ {interaction.user.mention} pokusil se použít /reset-penize bez oprávnění")
             return
         data = get_or_create_user(uzivatel.id)
         data["hotovost"] = 0
@@ -524,6 +530,7 @@ async def reset_penize(interaction: discord.Interaction, uzivatel: discord.Membe
         hraci.update_one({"_id": str(uzivatel.id)}, {"$set": data})
 
         await interaction.response.send_message(f"♻️ Peníze hráče {uzivatel.display_name} byly vynulovány.")
+        await log_action(bot, interaction.guild, f"♻️ {interaction.user.mention} resetoval peníze hráče {uzivatel.mention}")
 
 # Pay command
 
@@ -561,6 +568,7 @@ async def posli_penize(interaction: discord.Interaction, cil: discord.Member, ca
     hraci.update_one({"_id": str(cil.id)}, {"$set": prijemce_data})
 
     await interaction.response.send_message(f"💸 Poslal jsi {castka}$ hráči {cil.display_name}.")
+    await log_action(bot, interaction.guild, f"💸 {interaction.user.mention} poslal {castka}$ hráči {cil.mention}")
 # Kup auto command
 
 @tree.command(name="koupit-auto", description="Koupí auto, pokud máš dost peněz a případnou roli")
