@@ -1,0 +1,274 @@
+Vellfire Runabout 1984
+$39,000
+(Classic Cars)
+107 MPH	5.07 seconds	Coupe	Classic	Gasoline
+Vellfire Riptide 2020
+$45,200
+136 MPH	7.15 seconds	SUV	Regular	Gasoline
+Vellfire Prima 2009
+$17,850
+66 MPH	4.96 seconds	Sedan	Regular	Gasoline
+Vellfire Prairie 2022
+$60,000
+131 MPH	7.51 seconds	Truck	Regular	Gasoline
+Vellfire Pioneer 2019
+$199,820
+128 MPH	5.95 seconds	Coupe	Regular	Gasoline
+Vellfire Evertt 1995
+$14,500
+124 MPH	7.17 seconds	Truck	Regular	Gasoline
+Terrain Traveller 2022
+$159,000
+129 MPH	5.42 seconds	SUV	Prestige	Gasoline
+Takeo Experience 2021
+$475,000
+140 MPH	3.27 seconds	Coupe	Prestige	Gasoline
+Surrey 650S 2016
+$890,000
+150 MPH	3.74 seconds	Coupe	Prestige	Gasoline
+Stuttgart Vierturig 2021
+$162,000
+129 MPH	5.29 seconds	Sedan	Prestige	Gasoline
+Stuttgart Landschaft 2022
+$249,000
+124 MPH	5.67 seconds	SUV	Regular	Gasoline
+Stuttgart Executive 2021
+FREE
+(Paid Access)
+128 MPH	5.24 seconds	Sedan	Prestige	Gasoline
+Strugatti Ettore 2020
+$1,500,000
+170 MPH	3.88 seconds	Coupe	Prestige	Gasoline
+Sentinel Platinum 1968
+$32,450
+(Classic Cars)
+107 MPH	5.60 seconds	Sedan	Classic	Gasoline
+Pea Car 2025
+$86,900
+(April Fools 2025)
+67 MPH	7.28 seconds	Coupe	Regular	Gasoline
+Overland Buckaroo 2018
+$42,700
+131 MPH	7.73 seconds	SUV	Regular	Gasoline
+Overland Apache SFP 2020
+$92,000
+147 MPH	8.58 seconds	SUV	Regular	Gasoline
+Overland Apache 2011
+$42,000
+128 MPH	6.48 seconds	SUV	Regular	Gasoline
+Overland Apache 1995
+$9,950
+110 MPH	9.20 seconds	SUV	Regular	Gasoline
+Navara Imperium 2020
+$22,500
+110 MPH	4.87 seconds	Sedan	Regular	Gasoline
+Navara Horizon 2013
+$198,500
+157 MPH	3.86 seconds	Coupe	Regular	Gasoline
+Navara Boundary 2022
+$45,990
+140 MPH	7.47 seconds	Truck	Regular	Gasoline
+Leland Vault 2020
+$124,900
+125 MPH	5.49 seconds	SUV	Prestige	Gasoline
+Leland LTS5-V Blackwing 2023
+$255,000
+122 MPH	4.75 seconds	Sedan	Prestige	Gasoline
+Leland LTS 2010
+$27,500
+122 MPH	6.30 seconds	Sedan	Regular	Gasoline
+Leland Birchwood Hearse 1995
+FREE
+(25 Yellow Candy)
+(Halloween 2024)
+126 MPH	6.42 seconds	Sedan	Regular	Gasoline
+Lawn Mower
+
+$2,900
+11 MPH	N/A	ATV	Regular	Gasoline
+Ferdinand Jalapeno Turbo 2022
+$145,000
+155 MPH	5.16 seconds	SUV	Prestige	Gasoline
+Falcon Traveller 2003* 
+$12,500
+128 MPH	7.60 seconds	SUV	Regular	Gasoline
+Falcon Stallion 350 2015
+$139,000
+125 MPH	4.81 seconds	Coupe	Regular	Gasoline
+Falcon Stallion 350 1969
+$50,666
+(Classic Cars)
+114 MPH	4.90 seconds	Coupe	Classic	Gasoline
+Falcon Scavenger 2016
+$39,700
+127 MPH	6.70 seconds	SUV	Regular	Gasoline
+Falcon Rampage Bigfoot 2-Door 2021
+$65,000
+99 MPH	5.39 seconds	SUV	Regular	Gasoline
+Falcon Rampage Beast 2021
+$129,500
+99 MPH	5.85 seconds	SUV	Regular	Gasoline
+Falcon Heritage 2021
+Screenshot 2025-08-03 080041
+$620,900	167 MPH	3.25 seconds	Coupe	Prestige	Gasoline note
+not done well please edit it to make it better
+
+Falcon eStallion 2024
+$51,000
+(Electric Vehicles)
+124 MPH	3.83 seconds	SUV	Electric	Electric
+Falcon Coupe Hotrod 1934
+$28,900
+(Halloween 2024)
+129 MPH	6.41 seconds	Coupe	Classic	Gasoline
+Falcon Advance 100 Holiday Edition 1956
+$25,000
+(Winter 2024)
+115 MPH	6.91 seconds	Truck	Classic	Gasoline
+Elysion Slick 2014
+$19,000
+107 MPH	5.60 seconds	Sedan	Regular	Gasoline
+Chryslus Champion 2005
+$43,000
+100 MPH	5.25 seconds	Sedan	Regular	Gasoline
+Chevlon Revver 2005
+$40,000
+132 MPH	7.65 seconds	SUV	Regular	Gasoline
+Chevlon Platoro 2019
+$59,000
+131 MPH	7.43 seconds	Truck	Regular	Gasoline
+Chevlon Landslide 2007
+$19,500
+128 MPH	7.99 seconds	Truck	Regular	Gasoline
+Chevlon L/35 Extended 1981
+$24,900
+(Classic Cars)
+121 MPH	6.68 seconds	Truck	Classic	Gasoline
+Chevlon L/15 1981
+$16,700
+(Classic Cars)
+121 MPH	6.58 seconds	Truck	Classic	Gasoline
+Chevlon Inferno 1981
+$19,975
+(Classic Cars)
+135 MPH	8.17 seconds	Truck	Classic	Gasoline
+Chevlon Corbeta X08 2014
+Chevlon Corbeta X08 2014
+$96,000
+153 MPH	4.56 seconds	Coupe	Prestige	Gasoline
+Chevlon Corbeta RZR 2014
+$350,000
+163 MPH	4.14 seconds	Coupe	Prestige	Gasoline
+Chevlon Corbeta C2 1967
+$29,000
+(Classic Cars)
+140 MPH	6.80 seconds	Coupe	Classic	Gasoline
+Chevlon Corbeta 8 2023
+$410,000
+157 MPH	3.96 seconds	Coupe	Prestige	Gasoline
+Chevlon Corbeta 1M Edition 2014
+Chevlon Corbeta 1M Edition 2014
+FREE
+(1M Likes Event)
+153 MPH	4.58 seconds	Coupe	Prestige	Gasoline
+Chevlon Commuter Van 2006
+$25,000
+84 MPH	6.33 seconds	Industrial	Regular	Gasoline
+Chevlon Captain 2009
+$11,850
+126 MPH	5.82 seconds	Sedan	Regular	Gasoline
+Chevlon Camion 2021
+$49,500
+128 MPH	5.82 seconds	SUV	Regular	Gasoline
+Chevlon Camion 2018
+$34,500
+131 MPH	7.18 seconds	SUV	Regular	Gasoline
+Chevlon Camion 2008
+$28,050
+126 MPH	7.17 seconds	SUV	Regular	Gasoline
+Chevlon Camion 2002
+$8,900
+98 MPH	8.40 seconds	SUV	Regular	Gasoline
+Chevlon Antelope 1994
+FREE
+74 MPH	5.88 seconds	Sedan	Regular	Gasoline
+Chevlon Amigo Sport 2016
+$55,250
+129 MPH	6.06 seconds	Coupe	Regular	Gasoline
+Chevlon Amigo LZR 2016
+FREE
+(1B Visits Event)
+121 MPH	5.75 seconds	Coupe	Regular	Gasoline
+Chevlon Amigo LZR 2011
+$58,500
+133 MPH	4.51 seconds	Coupe	Regular	Gasoline
+Celestial Type-6 2023
+$46,780
+(Electric Vehicles)
+145 MPH	3.79 seconds	Sedan	Electric	Electric
+Celestial Truckatron 2024
+$179,950
+(Electric Vehicles)
+122 MPH	3.66 seconds	Truck	Electric	Electric
+Bullhorn Pueblo 2018
+$79,500
+125 MPH	5.62 seconds	SUV	Regular	Gasoline
+Bullhorn Prancer Widebody 2020
+$105,000
+136 MPH	5.12 seconds	Sedan	Regular	Gasoline
+Bullhorn Prancer 2015
+$48,500
+133 MPH	6.02 seconds	Sedan	Regular	Gasoline
+Bullhorn Prancer 2011llink=Bullhorn Prancer 2011
+$45,990
+126 MPH	5.38 seconds	Sedan	Regular	Gasoline
+Bullhorn Prancer 1969
+$48,500
+(Classic Cars)
+112 MPH	5.04 seconds	Coupe	Classic	Gasoline
+Bullhorn Foreman 1988
+FREE
+(Classic Cars)
+119 MPH	5.97 seconds	Sedan	Classic	Gasoline
+Bullhorn Determinator SFP Fury 2022
+$99,500
+162 MPH	4.54 seconds	Coupe	Regular	Gasoline
+Bullhorn Determinator SFP Blackjack Widebody 2022
+$124,999
+162 MPH	4.19 seconds	Coupe	Regular	Gasoline
+Bullhorn Determinator 2008
+$49,000
+125 MPH	5.42 seconds	Coupe	Regular	Gasoline
+Bullhorn BH15 2009
+$30,500
+127 MPH	7.19 seconds	Truck	Regular	Gasoline
+BKM Risen Roadster 2020
+$164,295
+(Electric Vehicles)
+146 MPH	3.93 seconds	Coupe	Electric	Electric
+BKM Munich 2020
+$156,000
+125 MPH	5.42 seconds	SUV	Prestige	Gasoline
+Averon S5 2010
+$132,795
+117 MPH	4.86 seconds	Coupe	Prestige	Gasoline
+Averon RS3 2020
+$169,000
+120 MPH	5.12 seconds	Sedan	Prestige	Gasoline
+Averon R8 2017
+$650,000
+146 MPH	4.97 seconds	Coupe	Prestige	Gasoline
+Averon Q8 2022
+$190,000
+125 MPH	5.41 seconds	SUV	Prestige	Gasoline
+Averon Anodic 2024
+$69,990
+(Electric Vehicles)
+119 MPH	5.75 seconds	SUV	Electric	Electric
+Arrow Phoenix Nationals 1977
+$47,000
+(Classic Cars)
+123 MPH	6.93 seconds	Coupe	Classic	Gasoline
+4-Wheeler
+$13,500
+60 MPH	4.73 seconds	ATV	Regular	Gasoline
