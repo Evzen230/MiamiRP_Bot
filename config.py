@@ -188,8 +188,6 @@ AUTA = {
     "Flood Light Trailer": {"cena": 32000, "role": "1293617189005557865", "top_speed": None, "class": None, "type": "Trailer", "fuel": None},
 }
 
-}
-
 # === ZBRANĚ ===
 DOSTUPNE_ZBRANE = [
     "Beretta M9", "M249", "Remington MSR", "M14", "AK47", "PPSH 41",
