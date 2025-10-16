@@ -107,7 +107,7 @@ AUTA = {
     "Falcon Advance Bolt 2024": {"cena": 350000, "role": None, "top_speed": 250, "class": "Electric", "type": "Electric SUV", "fuel": "Elektrika"},
     "Averon Anodic 2024": {"cena": 500000, "role": None, "top_speed": 119, "class": "Electric", "type": "SUV", "fuel": "Elektrika"},
     "Celestial Truckatron 2024": {"cena": 800000, "role": None, "top_speed": 118, "class": "Electric", "type": "Truck", "fuel": "Elektrika"},
-    "Celestial Type 9 2024": {"cena": 650000, "role": None, "top_speed": 170, "class": "Electric", "type": "Coupe", "fuel": "Elektrika"}
+    "Celestial Type 9 2024": {"cena": 650000, "role": None, "top_speed": 170, "class": "Electric", "type": "Coupe", "fuel": "Elektrika"},
     
     # LEO Vehicles
     "Falcon Prime Eques 2003": {"cena": 16000, "role": "1338975549711978568 || 1293617189005557870 || 1293617189005557868 || 1293617189005557864", "top_speed": None, "class": "Emergency", "type": None, "fuel": "Benzín"},
@@ -185,14 +185,14 @@ AUTA = {
     "Traffic Arrow Trailer": {"cena": 55000, "role": "1293617189005557865", "top_speed": None, "class": None, "type": "Trailer", "fuel": None},
     "LED Message Board Trailer": {"cena": 78000, "role": "1293617189005557865", "top_speed": None, "class": None, "type": "Trailer", "fuel": None},
     "Asphalt Trailer": {"cena": 89000, "role": "1293617189005557865", "top_speed": None, "class": None, "type": "Trailer", "fuel": None},
-    "Flood Light Trailer": {"cena": 32000, "role": "1293617189005557865", "top_speed": None, "class": None, "type": "Trailer", "fuel": None},
+    "Flood Light Trailer": {"cena": 32000, "role": "1293617189005557865", "top_speed": None, "class": None, "type": "Trailer", "fuel": None}
 }
 
 # === ZBRANĚ ===
 DOSTUPNE_ZBRANE = [
-    "Beretta M9", "M249", "Remington MSR", "M14", "AK47", "PPSH 41",
+    "Beretta M9", "M249*", "Remington MSR", "M14", "AK47", "PPSH 41",
     "Desert Eagle", "Colt M1911", "Kriss Vector", "LMT L129A1", "Skorpion",
-    "Colt Python", "TEC-9", "Remington 870", "Lemat Revolver"
+    "Colt Python", "TEC-9", "Remington 870", "Lemat Revolver", "Remington 700"
 ]
 
 CENY_ZBRANI = {
@@ -216,6 +216,7 @@ CENY_ZBRANI = {
     "Remington 870": 2000,
 
     # Zbraně typu D:
+    "Remington 700": 8000,
     "Remington MSR": 15000,
     "M249":  12000
 }
