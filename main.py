@@ -18,7 +18,7 @@ import re
 from config import *
 
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
-start_web()
+threading.Thread(target=start_web, daemon=True).start()
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
